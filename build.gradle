@@ -1,0 +1,45 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+group = "${artifact_group}.${artifact_id}"
+description = artifact_description
+def main = "${group}.Main"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+shadowJar {
+    archiveFileName = "${artifact_name}-standalone.jar"
+    manifest {
+        attributes 'Main-Class': main
+    }
+}
+
+jar {
+    archiveFileName = "${artifact_name}.jar"
+    manifest {
+        attributes 'Main-Class': main
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+javafx {
+    version = '17.0.6'
+    modules = [
+            'javafx.controls',
+            'javafx.fxml',
+            'javafx.graphics',
+            'javafx.base',
+            'javafx.media',
+            'javafx.swing',
+            'javafx.web'
+    ]
+}
