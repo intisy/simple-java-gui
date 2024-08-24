@@ -1,11 +1,10 @@
-/*
 package io.github.intisy.gui.swing;
 
 import java.awt.*;
 
 public class JSimpleButton extends JHoverButton {
-    public JSimpleButton(String text) {
-        super();
+    public JSimpleButton(Frame frame, String text) {
+        super(frame);
         setText(text);
         setOpaque(false);
     }
@@ -40,4 +39,3 @@ public class JSimpleButton extends JHoverButton {
         }
     }
 }
-*/

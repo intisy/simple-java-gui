@@ -1,16 +1,13 @@
-/*
 package io.github.intisy.gui.swing;
 
 import javax.swing.*;
 import java.awt.*;
 
-import io.github.intisy.blizzity.GUI;
-
 public class JImageButton extends JHoverButton {
     private final double arcWidth;
     private final double arcHeight;
-    public JImageButton(double arcWidth, double arcHeight, ImageIcon icon) {
-        super();
+    public JImageButton(Frame frame, double arcWidth, double arcHeight, ImageIcon icon) {
+        super(frame);
         this.setIcon(icon);
         this.arcWidth = arcWidth;
         this.arcHeight = arcHeight;
@@ -22,7 +19,7 @@ public class JImageButton extends JHoverButton {
         int height = getHeight();
         double multiplier = (double) Math.min(height, width) /40;
         double size = Math.max(getIcon().getIconWidth(), getIcon().getIconHeight())*multiplier;
-        g.setColor(GUI.color2);
+        g.setColor(Colors.background);
         g.fillRect(0, 0, width, height);
         if (color)
             g.setColor(this.hoverBoxColor);
@@ -41,4 +38,3 @@ public class JImageButton extends JHoverButton {
         g.drawImage(image, (int) (width/2-iconWidth*multiplier/2), (int) (height/2-iconHeight*multiplier/2), this);
     }
 }
-*/

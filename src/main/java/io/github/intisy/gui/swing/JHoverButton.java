@@ -1,4 +1,3 @@
-/*
 package io.github.intisy.gui.swing;
 
 import io.github.intisy.gui.listeners.ScreenListener;
@@ -12,6 +11,7 @@ import java.awt.event.*;
 public class JHoverButton extends JButton implements MouseMotionListener {
     Color hoverTextColor;
     Color hoverBoxColor;
+    Frame frame;
     protected EventListenerList listenerList = new EventListenerList();
     public void addActionListener(ConditionalEventListener listener) {
         listenerList.add(ConditionalEventListener.class, listener);
@@ -38,13 +38,15 @@ public class JHoverButton extends JButton implements MouseMotionListener {
     public void setHoverForeground(Color color) {
         this.hoverTextColor = color;
     }
-    public JHoverButton() {
+    public JHoverButton(Frame frame) {
         super();
+        this.frame = frame;
         addMouseMotionListener(this);
         super.addActionListener(e -> fireAction(new ConditionalEvent(this), !isDarkened));
     }
-    public JHoverButton(Icon icon) {
+    public JHoverButton(Frame frame, Icon icon) {
         super(icon);
+        this.frame = frame;
         addMouseMotionListener(this);
         super.addActionListener(e -> fireAction(new ConditionalEvent(this), !isDarkened));
     }
@@ -52,7 +54,7 @@ public class JHoverButton extends JButton implements MouseMotionListener {
     protected void paintComponent(Graphics g) {
         try {
             Point mousePoint = MouseInfo.getPointerInfo().getLocation();
-            paintComponent(g, !ScreenListener.change && ScreenListener.isSelected(this) && GUI.frame.getBounds().contains(mousePoint) && !isDarkened);
+            paintComponent(g, !ScreenListener.change && ScreenListener.isSelected(this) && frame.getBounds().contains(mousePoint) && !isDarkened);
             if (isDarkened) {
                 g.setColor(new Color(0, 0, 0, 128));
                 g.fillRect(0, 0, Math.max((int) getMaximumSize().getWidth(), getWidth()), Math.max((int) getMaximumSize().getHeight(), getWidth()));
@@ -74,4 +76,3 @@ public class JHoverButton extends JButton implements MouseMotionListener {
         ScreenListener.mouse = point;
     }
 }
-*/
