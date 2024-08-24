@@ -50,7 +50,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/Blizzity/SimpleJavaGui")
+            url = uri("https://maven.pkg.github.com/intisy/SimpleJavaGui")
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
                 password = System.getenv("GITHUB_TOKEN")
