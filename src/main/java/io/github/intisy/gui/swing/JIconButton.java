@@ -1,3 +1,4 @@
+/*
 package io.github.intisy.gui.swing;
 
 import io.github.intisy.blizzity.GUI;
@@ -42,3 +43,4 @@ public class JIconButton extends JHoverButton {
         }
     }
 }
+*/

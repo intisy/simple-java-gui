@@ -6,6 +6,7 @@ plugins {
 
 group = "${artifact_group}.${artifact_id}"
 description = artifact_description
+version = project.hasProperty('version') ? project.version : '1.0'
 def main = "${group}.Main"
 
 repositories {
@@ -58,7 +59,7 @@ publishing {
     }
     publications {
         gpr(MavenPublication) {
-            artifactId = 'simple-variables'
+            artifactId = artifact_name
         }
     }
 }

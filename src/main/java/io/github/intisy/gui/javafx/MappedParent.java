@@ -1,6 +1,6 @@
 package io.github.intisy.gui.javafx;
 
-import io.github.intisy.blizzity.Double;
+import io.github.intisy.gui.Double;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;

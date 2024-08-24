@@ -1,6 +1,5 @@
 package io.github.intisy.gui.javafx;
 
-import io.github.intisy.blizzity.GUI;
 import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.paint.Color;
@@ -15,8 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ResizablePanel extends MappedJFXPanel {
     protected double tempWidth, tempHeight, height, width;
     public double offsetRadius;
-    double outlineRadius = 1 * GUI.sizeMultiplier;
-    double hitboxRadius = 5 * GUI.sizeMultiplier;
+    double hitboxRadius = 5;
     public List<Interface> resizeEvent = new ArrayList<>();
     JDialog dialog;
     JFrame frame;

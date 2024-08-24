@@ -1,3 +1,4 @@
+/*
 package io.github.intisy.gui.swing;
 
 import java.awt.*;
@@ -39,3 +40,4 @@ public class JSimpleButton extends JHoverButton {
         }
     }
 }
+*/

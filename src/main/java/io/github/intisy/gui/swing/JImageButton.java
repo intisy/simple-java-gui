@@ -1,3 +1,4 @@
+/*
 package io.github.intisy.gui.swing;
 
 import javax.swing.*;
@@ -40,3 +41,4 @@ public class JImageButton extends JHoverButton {
         g.drawImage(image, (int) (width/2-iconWidth*multiplier/2), (int) (height/2-iconHeight*multiplier/2), this);
     }
 }
+*/

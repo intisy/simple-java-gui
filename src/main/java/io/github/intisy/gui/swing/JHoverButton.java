@@ -1,6 +1,6 @@
+/*
 package io.github.intisy.gui.swing;
 
-import io.github.intisy.blizzity.GUI;
 import io.github.intisy.gui.listeners.ScreenListener;
 
 import javax.swing.*;
@@ -74,3 +74,4 @@ public class JHoverButton extends JButton implements MouseMotionListener {
         ScreenListener.mouse = point;
     }
 }
+*/

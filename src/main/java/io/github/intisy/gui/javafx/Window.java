@@ -1,6 +1,5 @@
 package io.github.intisy.gui.javafx;
 
-import io.github.intisy.blizzity.GUI;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -18,20 +17,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Window {
-    double blurRadius = 10 * GUI.sizeMultiplier;
     double outlineRadius = 1;
-    double hitboxRadius = 5;
+    double blurRadius;
     double height;
     double width;
+    double sizeMultiplier;
     JDialog dialog;
     ResizablePanel jfxPanel;
     SimpleSVGButton jfxCloseButton;
     public Window() {
-        this(300, 200);
+        this(300, 200, 10);
     }
-    public Window(double width, double height) {
+    public Window(double width, double height, double blurRadius) {
         this.width = width;
         this.height = height;
+        this.blurRadius = blurRadius;
+        sizeMultiplier = blurRadius / 10;
     }
 
     public void open(JFrame frame) {
@@ -57,11 +58,11 @@ public class Window {
                 blur.setWidth(width);
                 blur.toBack();
                 Container main = (Container) jfxPanel.getMappedParent().get("window.main");
-                main.setCurrentHeight(height - 40 * GUI.sizeMultiplier, true);
+                main.setCurrentHeight(height - 40 * sizeMultiplier, true);
                 main.setCurrentWidth(width, true);
                 Container title = (Container) jfxPanel.getMappedParent().get("window.title");
                 title.setCurrentWidth(width, true);
-                jfxCloseButton.setLayoutX((width - 30)*GUI.sizeMultiplier);
+                jfxCloseButton.setLayoutX((width - 30)*sizeMultiplier);
             });
             setContent(dialog);
             dialog.add(jfxPanel);
@@ -72,14 +73,14 @@ public class Window {
         Platform.runLater(() -> {
             Rectangle outline = new Rectangle(blurRadius - outlineRadius, blurRadius - outlineRadius, width + outlineRadius * 2, height + outlineRadius * 2);
             outline.setFill(Color.TRANSPARENT);
-            Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * GUI.sizeMultiplier, width, 1);
+            Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
             divider.setFill(Color.rgb(60, 63, 65));
             Rectangle rectangle = new Rectangle(blurRadius, blurRadius, width, height);
             rectangle.setFill(Color.BLACK);
             GaussianBlur blur = new GaussianBlur();
             blur.setRadius(blurRadius);
             rectangle.setEffect(blur);
-            Container title = new Container(width, 40 * GUI.sizeMultiplier)
+            Container title = new Container(width, 40 * sizeMultiplier)
                     .setY(blurRadius)
                     .setX(blurRadius)
                     .setColor(Color.rgb(43, 45, 48));
@@ -111,13 +112,13 @@ public class Window {
             path2.setStrokeWidth(0.7);
             path2.setStroke(javafx.scene.paint.Color.WHITE);
             Group svgGroup = new Group(path1, path2);
-            svgGroup.setScaleX(1 * GUI.sizeMultiplier);
-            svgGroup.setScaleY(1 * GUI.sizeMultiplier);
-            svgGroup.setLayoutX(30 * GUI.sizeMultiplier / 2 - svgGroup.getLayoutBounds().getCenterX());
-            svgGroup.setLayoutY(40 * GUI.sizeMultiplier / 2 - svgGroup.getLayoutBounds().getCenterY());
-            jfxCloseButton = new SimpleSVGButton(svgGroup, 30 * GUI.sizeMultiplier, 40 * GUI.sizeMultiplier);
+            svgGroup.setScaleX(1 * sizeMultiplier);
+            svgGroup.setScaleY(1 * sizeMultiplier);
+            svgGroup.setLayoutX(30 * sizeMultiplier / 2 - svgGroup.getLayoutBounds().getCenterX());
+            svgGroup.setLayoutY(40 * sizeMultiplier / 2 - svgGroup.getLayoutBounds().getCenterY());
+            jfxCloseButton = new SimpleSVGButton(svgGroup, 30 * sizeMultiplier, 40 * sizeMultiplier);
             jfxCloseButton.setBackgroundColor(javafx.scene.paint.Color.rgb(201, 79, 79));
-            jfxCloseButton.setLayoutX((width - 30) * GUI.sizeMultiplier);
+            jfxCloseButton.setLayoutX((width - 30) * sizeMultiplier);
             jfxCloseButton.setOnAction(actionEvent -> close());
             title.getChildren().add(jfxCloseButton);
             final Point[] clickPoint = new Point[1];
@@ -127,7 +128,7 @@ public class Window {
                 int yOffset = (int) (dialog.getLocation().y - clickPoint[0].y + event.getY());
                 dialog.setLocation(xOffset, yOffset);
             });
-            Container main = new Container(width, height - 41 * GUI.sizeMultiplier).setY(41 * GUI.sizeMultiplier + blurRadius).setX(blurRadius);
+            Container main = new Container(width, height - 41 * sizeMultiplier).setY(41 * sizeMultiplier + blurRadius).setX(blurRadius);
             jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline, "window.divider", divider, "window.title", title, "window.main", main);
             jfxPanel.toFront();
         });
