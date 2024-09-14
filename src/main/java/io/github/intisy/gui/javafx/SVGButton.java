@@ -7,6 +7,7 @@ import javafx.scene.shape.Rectangle;
 @SuppressWarnings("unused")
 public class SVGButton extends Button {
     public boolean selected = false;
+    public boolean enabled = true;
     private final Node group;
     private Interface onAction;
 
@@ -27,14 +28,14 @@ public class SVGButton extends Button {
 
         getChildren().addAll(group, hitbox);
         hitbox.setOnMouseEntered(event -> {
-            if (!selected && !getChildren().contains(rectangle)) {
+            if (enabled && !selected && !getChildren().contains(rectangle)) {
                 getChildren().add(rectangle);
                 group.toFront();
                 hitbox.toFront();
             }
         });
         hitbox.setOnMouseExited(event -> {
-            if (!selected && getChildren().contains(rectangle) && (!group.isHover() || !hitbox.isHover() || !rectangle.isHover())) {
+            if (enabled && !selected && getChildren().contains(rectangle) && (!group.isHover() || !hitbox.isHover() || !rectangle.isHover())) {
                 getChildren().remove(rectangle);
                 group.toFront();
                 hitbox.toFront();
@@ -50,6 +51,11 @@ public class SVGButton extends Button {
     public void setSelectedAnonymously(boolean selected) {
         this.selected = selected;
     }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public void setSelected(boolean selected) {
         this.selected = selected;
         if (selected) {
