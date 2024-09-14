@@ -2,7 +2,10 @@ package io.github.intisy.gui.swing;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
@@ -32,7 +35,7 @@ public class JRoundedTextField extends JTextField {
                 UUID luuid = UUID.randomUUID();
                 uuid = luuid;
                 blink = true;
-                java.util.Timer timer = new Timer();
+                Timer timer = new Timer();
                 TimerTask task = new TimerTask() {
                     @Override
                     public void run() {
@@ -58,29 +61,29 @@ public class JRoundedTextField extends JTextField {
         MouseAdapter mouseHandler = new MouseAdapter() { //TODO improve selection system
             @Override
             public void mousePressed(MouseEvent e) {
-                Point point = e.getPoint();
-                point.x -= alignmentOffset;
-                int clickOffset = viewToModel2D(point);
-                dragStart = point;
-                adjustCaretPosition(clickOffset);
-                repaint();
+//                Point point = e.getPoint();
+//                point.x -= alignmentOffset;
+//                int clickOffset = viewToModel2D(point);
+//                dragStart = point;
+//                adjustCaretPosition(clickOffset);
+//                repaint();
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                Point point = e.getPoint();
-                point.x -= alignmentOffset;
-                int dragEnd = viewToModel2D(point);
-                if (viewToModel2D(dragStart) != -1 && dragEnd != -1) {
-                    select(Math.min(viewToModel2D(dragStart), dragEnd), Math.max(viewToModel2D(dragStart), dragEnd));
-                    String selected = getSelectedText();
-                    if (selected != null) {
-                        l = getFontMetrics(getFont()).stringWidth(getText().substring(0, Math.min(viewToModel2D(dragStart), dragEnd))) + alignmentOffset;
-                        w = getFontMetrics(getFont()).stringWidth(selected);
-
-                        repaint();
-                    }
-                }
+//                Point point = e.getPoint();
+//                point.x -= alignmentOffset;
+//                int dragEnd = viewToModel2D(point);
+//                if (viewToModel2D(dragStart) != -1 && dragEnd != -1) {
+//                    select(Math.min(viewToModel2D(dragStart), dragEnd), Math.max(viewToModel2D(dragStart), dragEnd));
+//                    String selected = getSelectedText();
+//                    if (selected != null) {
+//                        l = getFontMetrics(getFont()).stringWidth(getText().substring(0, Math.min(viewToModel2D(dragStart), dragEnd))) + alignmentOffset;
+//                        w = getFontMetrics(getFont()).stringWidth(selected);
+//
+//                        repaint();
+//                    }
+//                }
             }
             private void adjustCaretPosition(int clickOffset) {
                 int textLength = getText().length();

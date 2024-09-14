@@ -6,8 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.SVGPath;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,6 +18,7 @@ import java.util.List;
 
 public class Window {
     double outlineRadius = 1;
+    int iconSize = 10;
     double blurRadius;
     double height;
     double width;
@@ -47,7 +48,7 @@ public class Window {
             dialog.getRootPane().setOpaque(false);
             dialog.getRootPane().setBackground(new java.awt.Color(0, 0, 0, 0));
             jfxPanel.setDialog(dialog);
-            jfxPanel.resizeEvent.add((width, height) -> {
+            jfxPanel.addOnResize((width, height) -> {
                 Rectangle divider = (Rectangle) jfxPanel.getMappedParent().get("window.divider");
                 divider.setWidth(width);
                 Rectangle outline = (Rectangle) jfxPanel.getMappedParent().get("window.outline");
@@ -103,21 +104,15 @@ public class Window {
                     });
                 }
             });
-            SVGPath path1 = new SVGPath();
-            path1.setContent("M7 17L16.8995 7.10051");
-            path1.setStrokeWidth(0.7);
-            path1.setStroke(javafx.scene.paint.Color.WHITE);
-            SVGPath path2 = new SVGPath();
-            path2.setContent("M7 7.00001L16.8995 16.8995");
-            path2.setStrokeWidth(0.7);
-            path2.setStroke(javafx.scene.paint.Color.WHITE);
-            Group svgGroup = new Group(path1, path2);
-            svgGroup.setScaleX(1 * sizeMultiplier);
-            svgGroup.setScaleY(1 * sizeMultiplier);
-            svgGroup.setLayoutX(30 * sizeMultiplier / 2 - svgGroup.getLayoutBounds().getCenterX());
-            svgGroup.setLayoutY(40 * sizeMultiplier / 2 - svgGroup.getLayoutBounds().getCenterY());
-            jfxCloseButton = new SimpleSVGButton(svgGroup, 30 * sizeMultiplier, 40 * sizeMultiplier);
-            jfxCloseButton.setBackgroundColor(javafx.scene.paint.Color.rgb(201, 79, 79));
+            Group closeShape = new Group(
+                    new Line(0, 0, iconSize, iconSize),
+                    new Line(0, iconSize, iconSize, 0)
+            );
+            closeShape.setLayoutX((30 * sizeMultiplier - iconSize) / 2);
+            closeShape.setLayoutY((40 * sizeMultiplier - iconSize) / 2);
+            closeShape.getChildren().forEach(line -> ((Line) line).setStroke(Color.WHITE));
+            jfxCloseButton = new SimpleSVGButton(closeShape, 30 * sizeMultiplier, 40 * sizeMultiplier);
+            jfxCloseButton.setBackgroundColor(Color.rgb(201, 79, 79));
             jfxCloseButton.setLayoutX((width - 30) * sizeMultiplier);
             jfxCloseButton.setOnAction(actionEvent -> close());
             title.getChildren().add(jfxCloseButton);

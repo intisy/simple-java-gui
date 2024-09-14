@@ -63,10 +63,7 @@ public class Container extends MappedPane {
     }
     public boolean setCurrentHeight(double height, boolean ignore) {
         if (((height >= getMinHeight() || getMinHeight() == -1) && ((height <= getMaxHeight()) || getMaxHeight() == -1)) || ignore) {
-            this.height = height;
-            super.setHeight(height);
-            if (outlineRightHitbox != null)
-                outlineRightHitbox.setHeight(height);
+            setHeight((float) height);
             drawContainer();
             return true;
         }
@@ -86,27 +83,28 @@ public class Container extends MappedPane {
     }
     public boolean setCurrentWidth(double width, boolean ignore) {
         if (((width >= getMinWidth() || getMinWidth() == -1) && ((width <= getMaxWidth()) || getMaxWidth() == -1)) || ignore) {
-            this.width = width;
-            super.setWidth(width);
-            if (outlineTopHitbox != null)
-                outlineTopHitbox.setWidth(width);
+            setWidth((float) width);
             drawContainer();
             return true;
         }
         return false;
     }
     public Container setWidth(float width) {
+        double oldWidth = this.width;
         this.width = width;
         super.setWidth(width);
+        if (outlineRightHitbox != null)
+            outlineRightHitbox.setX(outlineRightHitbox.getX() + (width - oldWidth));
         if (outlineTopHitbox != null)
             outlineTopHitbox.setWidth(width);
         return this;
     }
     public Container setHeight(float height) {
+        double oldHeight = this.height;
         this.height = height;
         super.setWidth(height);
-        if (outlineTopHitbox != null)
-            outlineTopHitbox.setWidth(height);
+        if (outlineRightHitbox != null)
+            outlineRightHitbox.setHeight(height);
         return this;
     }
     public Container setOutlineColor(Color outlineColor) {
@@ -217,7 +215,6 @@ public class Container extends MappedPane {
                             outlineTopHitbox.setOnMouseDragged(event -> {
                                 int yOffset = (int) (clickPoint[0].y - event.getY());
                                 clickPoint[0] = new Point((int) event.getX(), (int) event.getY());
-                                outlineTopHitbox.setY(outlineTopHitbox.getY() - yOffset);
                                 List<Container> relatedChildren = getRelatedTreeY(children);
                                 int stop = -1;
                                 int index = 0;
@@ -238,7 +235,6 @@ public class Container extends MappedPane {
                                 }
                                 index = 0;
                                 if (stop != -1) {
-                                    outlineTopHitbox.setY(outlineTopHitbox.getY() + yOffset);
                                     for (Container child : relatedChildren) {
                                         if (index == stop)
                                             break;
@@ -274,7 +270,6 @@ public class Container extends MappedPane {
                             outlineRightHitbox.setOnMouseDragged(event -> {
                                 int xOffset = (int) (clickPoint[0].x - event.getX());
                                 clickPoint[0] = new Point((int) event.getX(), (int) event.getX());
-                                outlineRightHitbox.setX(outlineRightHitbox.getX() - xOffset);
                                 List<Container> relatedChildren = getRelatedTreeX(children);
                                 int stop = -1;
                                 int index = 0;
@@ -299,7 +294,6 @@ public class Container extends MappedPane {
                                 originalX = getX();
                                 originalWidth = getWidth();
                                 if (stop != -1) {
-                                    outlineRightHitbox.setX(outlineRightHitbox.getX() + xOffset);
                                     for (Container child : relatedChildren) {
                                         if (index == stop)
                                             break;
@@ -362,9 +356,15 @@ public class Container extends MappedPane {
         return this;
     }
     public Container setX(double x) {
+        if (outlineRightHitbox != null) {
+            outlineRightHitbox.setX(outlineRightHitbox.getX() + (x - this.x));
+        }
         this.x = x;
         drawContainer();
         return this;
+    }
+    public Container addX(double x) {
+        return setX(this.x + x);
     }
 
     public double getX() {
@@ -372,9 +372,16 @@ public class Container extends MappedPane {
     }
 
     public Container setY(double y) {
+        if (outlineTopHitbox != null) {
+            outlineTopHitbox.setY(outlineTopHitbox.getY() - (this.y - y));
+        }
         this.y = y;
         drawContainer();
         return this;
+    }
+
+    public Container addY(double y) {
+        return setY(this.y + y);
     }
 
     public double getY() {

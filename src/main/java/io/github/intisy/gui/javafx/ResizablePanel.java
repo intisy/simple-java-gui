@@ -15,7 +15,7 @@ public class ResizablePanel extends MappedJFXPanel {
     protected double tempWidth, tempHeight, height, width;
     public double offsetRadius;
     double hitboxRadius = 5;
-    public List<Interface> resizeEvent = new ArrayList<>();
+    public List<Object> resizeEvents = new ArrayList<>();
     JDialog dialog;
     JFrame frame;
 
@@ -46,7 +46,7 @@ public class ResizablePanel extends MappedJFXPanel {
         setBackground(new java.awt.Color(0, 0, 0, 0));
         Platform.runLater(() -> {
             getScene().getRoot().setStyle("-fx-background-color: transparent;");
-            getScene().setFill(javafx.scene.paint.Color.TRANSPARENT);
+            getScene().setFill(Color.TRANSPARENT);
             getMappedParent().add("cursor.nw_resize", newDraggable(Cursor.NW_RESIZE), 0);
             getMappedParent().add("cursor.n_resize", newDraggable(Cursor.N_RESIZE), -1);
             getMappedParent().add("cursor.ne_resize", newDraggable(Cursor.NE_RESIZE), -2);
@@ -75,27 +75,30 @@ public class ResizablePanel extends MappedJFXPanel {
         setSize(width, height, true);
     }
     public void setSize(double width, double height, boolean refresh) {
-        this.width = width;
-        this.height = height;
-        moveResizeHitboxes();
-        callResize(width, height);
-        if (dialog != null) {
-            if (refresh)
-                dialog.setSize((int) (width + offsetRadius * 2), (int) (height + offsetRadius * 2));
-            else {
-                if (tempWidth == 0 || Math.abs(tempWidth - width) <= 20) {
-                    tempWidth = width + 300;
-                    dialog.setSize((int) tempWidth, (int) tempHeight);
+        ResizeEvent event = new ResizeEvent(width, height, this.width, this.height);
+        callResize(event);
+        if (!event.isCanceled()) {
+            this.width = width;
+            this.height = height;
+            moveResizeHitboxes();
+            if (dialog != null) {
+                if (refresh)
+                    dialog.setSize((int) (width + offsetRadius * 2), (int) (height + offsetRadius * 2));
+                else {
+                    if (tempWidth == 0 || Math.abs(tempWidth - width) <= 20) {
+                        tempWidth = width + 300;
+                        dialog.setSize((int) tempWidth, (int) tempHeight);
+                    }
+                    if (tempHeight == 0 || Math.abs(tempHeight - height) <= 20) {
+                        tempHeight = height + 300;
+                        dialog.setSize((int) tempWidth, (int) tempHeight);
+                    }
                 }
-                if (tempHeight == 0 || Math.abs(tempHeight - height) <= 20) {
-                    tempHeight = height + 300;
-                    dialog.setSize((int) tempWidth, (int) tempHeight);
-                }
-            }
-        } else {
+            } else {
                 setPreferredSize(new Dimension((int) (width + offsetRadius * 2), (int) (height + offsetRadius * 2)));
                 super.setSize(new Dimension((int) (width + offsetRadius * 2), (int) (height + offsetRadius * 2)));
                 frame.pack();
+            }
         }
     }
     private Rectangle newDraggable(Cursor cursor) {
@@ -209,16 +212,34 @@ public class ResizablePanel extends MappedJFXPanel {
         leftHitbox.setWidth(hitboxRadius *2);
         leftHitbox.setHeight(height- hitboxRadius *2);
     }
-    public void callResize(double width, double height) {
-        for (Interface action : resizeEvent) {
-            action.execute(width, height);
+    public void callResize(ResizeEvent event) {
+        for (Object resizeEvent : resizeEvents) {
+            if (resizeEvent instanceof Interface)
+                ((Interface) resizeEvent).execute(event.getWidth(), event.getHeight());
+            else if (resizeEvent instanceof EventInterface)
+                ((EventInterface) resizeEvent).execute(event);
         }
     }
+    public void callResize(double width, double height) {
+        for (Object resizeEvent : resizeEvents) {
+            if (resizeEvent instanceof Interface)
+                ((Interface) resizeEvent).execute(width, height);
+            else if (resizeEvent instanceof EventInterface)
+                ((EventInterface) resizeEvent).execute(new ResizeEvent(width, height, width, height));
+        }
+    }
+    public void addOnResize(EventInterface action) {
+        resizeEvents.add(action);
+    }
     public void addOnResize(Interface action) {
-        resizeEvent.add(action);
+        resizeEvents.add(action);
     }
     @FunctionalInterface
     public interface Interface {
         void execute(double width, double height);
+    }
+    @FunctionalInterface
+    public interface EventInterface {
+        void execute(ResizeEvent event);
     }
 }

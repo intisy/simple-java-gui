@@ -108,7 +108,7 @@ public class SimpleButton extends Button {
     public void setSelectedStrokeColor(Color color) {
         selectedStrokeColor = color;
     }
-    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<>() {
+    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
             setEventHandler(ActionEvent.ACTION, get());

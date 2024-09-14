@@ -67,13 +67,13 @@ public class AccountComboBox extends HoverPane {
             displayName.setPrefSize(85 * sizeMultiplier, 20 * sizeMultiplier);
             displayName.setLayoutX(75 * sizeMultiplier);
             displayName.setLayoutY(imageView.getFitHeight() / 2);
-            displayName.setTextFill(javafx.scene.paint.Color.WHITE);
+            displayName.setTextFill(Color.WHITE);
             Label username = new Label("@" + info.get("username"));
             username.setStyle("-fx-font-weight: bold; -fx-font-size: 9px;");
             username.setPrefSize(85 * sizeMultiplier, 20 * sizeMultiplier);
             username.setLayoutX(75 * sizeMultiplier);
             username.setLayoutY(10 * sizeMultiplier + imageView.getFitHeight() / 2);
-            username.setTextFill(javafx.scene.paint.Color.rgb(128, 128, 128));
+            username.setTextFill(Color.rgb(128, 128, 128));
             pane.getChildren().addAll(imageView, displayName, username);
         }
         return pane;
@@ -216,7 +216,7 @@ public class AccountComboBox extends HoverPane {
     public double getNewHeight() {
         return height;
     }
-    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<>() {
+    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
             setEventHandler(ActionEvent.ACTION, get());
@@ -232,7 +232,7 @@ public class AccountComboBox extends HoverPane {
             return "onAction";
         }
     };
-    private final ObjectProperty<EventHandler<ActionEvent>> onSelect = new ObjectPropertyBase<>() {
+    private final ObjectProperty<EventHandler<ActionEvent>> onSelect = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
             setEventHandler(ActionEvent.ACTION, get());

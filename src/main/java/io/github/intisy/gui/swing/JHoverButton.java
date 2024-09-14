@@ -5,7 +5,8 @@ import io.github.intisy.gui.listeners.ScreenListener;
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 @SuppressWarnings("unused")
 public class JHoverButton extends JButton implements MouseMotionListener {

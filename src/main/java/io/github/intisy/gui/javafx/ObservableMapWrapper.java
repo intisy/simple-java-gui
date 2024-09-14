@@ -167,7 +167,7 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
     }
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
+        for (Entry<? extends K, ? extends V> e : m.entrySet()) {
             put(e.getKey(), e.getValue());
         }
     }
@@ -507,7 +507,7 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
             if (!(o instanceof Map.Entry)) {
                 return false;
             }
-            Map.Entry e = (Map.Entry) o;
+            Entry e = (Entry) o;
             Object k1 = getKey();
             Object k2 = e.getKey();
             if (k1 == k2 || (k1 != null && k1.equals(k2))) {

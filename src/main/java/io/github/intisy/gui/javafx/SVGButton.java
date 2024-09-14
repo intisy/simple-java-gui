@@ -1,9 +1,5 @@
 package io.github.intisy.gui.javafx;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ObjectPropertyBase;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,27 +8,17 @@ import javafx.scene.shape.Rectangle;
 public class SVGButton extends Button {
     public boolean selected = false;
     private final Node group;
-    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<>() {
-        @Override
-        protected void invalidated() {
-            setEventHandler(ActionEvent.ACTION, get());
-        }
+    private Interface onAction;
 
-        @Override
-        public Object getBean() {
-            return this;
-        }
+    public Node getSVG() {
+        return group;
+    }
 
-        @Override
-        public String getName() {
-            return "onAction";
-        }
-    };
     public SVGButton(Node group, double width, double height, double arc) {
         super(width-width/4, height-height/4);
         this.group = group;
         Rectangle hitbox = new Rectangle(0, 0, width, height);
-        hitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        hitbox.setFill(Color.TRANSPARENT);
         rectangle.setFill(Color.WHITE);
         rectangle.setArcWidth(arc);
         rectangle.setArcHeight(arc);
@@ -56,11 +42,14 @@ public class SVGButton extends Button {
 
         });
         hitbox.setOnMouseClicked(event -> {
-            onAction.getValue().handle(new ActionEvent());
+            boolean oldSelected = selected;
             selected = true;
+            onAction.execute(oldSelected);
         });
     }
-
+    public void setSelectedAnonymously(boolean selected) {
+        this.selected = selected;
+    }
     public void setSelected(boolean selected) {
         this.selected = selected;
         if (selected) {
@@ -74,9 +63,13 @@ public class SVGButton extends Button {
 
     }
     public void callEvent() {
-        onAction.getValue().handle(new ActionEvent());
+        onAction.execute(selected);
     }
-    public final void setOnAction(EventHandler<ActionEvent> var1) {
-        this.onAction.set(var1);
+    public final void setOnAction(Interface var1) {
+        this.onAction = var1;
+    }
+    @FunctionalInterface
+    public interface Interface {
+        void execute(boolean selected);
     }
 }

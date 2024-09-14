@@ -11,7 +11,7 @@ import javafx.scene.shape.Rectangle;
 @SuppressWarnings("unused")
 public class SimpleSVGButton extends Button {
     private final Node group;
-    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<>() {
+    private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
             setEventHandler(ActionEvent.ACTION, get());
@@ -31,7 +31,7 @@ public class SimpleSVGButton extends Button {
         super(width, height);
         this.group = group;
         Rectangle hitbox = new Rectangle(0, 0, width, height);
-        hitbox.setFill(javafx.scene.paint.Color.TRANSPARENT);
+        hitbox.setFill(Color.TRANSPARENT);
         double multiplier = Math.min(height, width)/40;
         rectangle.setFill(Color.WHITE);
         rectangle.setLayoutX(0);
