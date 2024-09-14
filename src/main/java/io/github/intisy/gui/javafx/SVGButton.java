@@ -43,9 +43,11 @@ public class SVGButton extends Button {
 
         });
         hitbox.setOnMouseClicked(event -> {
-            boolean oldSelected = selected;
-            selected = true;
-            onAction.execute(oldSelected);
+            if (enabled) {
+                boolean oldSelected = selected;
+                selected = true;
+                onAction.execute(oldSelected);
+            }
         });
     }
     public void setSelectedAnonymously(boolean selected) {
