@@ -3,6 +3,7 @@ package io.github.intisy.gui.javafx;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -26,7 +27,6 @@ public class Container extends MappedPane {
     double x;
     double y;
     public List<Interface> onResize = new ArrayList<>();
-    List<Node> nodes = new ArrayList<>();
     public Container setResizable(boolean resizable) {
         this.resizable = resizable;
         return this;
@@ -36,29 +36,25 @@ public class Container extends MappedPane {
         addLineBreak(name, y, 16 * sizeMultiplier, sizeMultiplier);
     }
 
-    public void clearLineBreaks() {
-        getChildren().removeAll(nodes);
-        nodes.clear();
-    }
-
-    public void addLineBreak(String name, double y, double x, double sizeMultiplier) {
+    public Pane addLineBreak(String name, double y, double x, double sizeMultiplier) {
+        Pane pane = new Pane();
+        pane.setLayoutY(y);
+        pane.setLayoutX(x);
         Label label = new Label(name);
         Font font = new Font(label.getFont().getFamily(), label.getFont().getSize()*sizeMultiplier);
         label.setFont(font);
         label.setTextFill(Colors.textColor);
-        label.setLayoutY(y);
-        label.setLayoutX(x);
         Rectangle rectangle = new Rectangle(0, 0, 0, 0.5);
         label.widthProperty().addListener((observable, oldValue, newValue) -> {
-            rectangle.setX(newValue.doubleValue() + x + 9 * sizeMultiplier);
+            rectangle.setX(newValue.doubleValue() + 9 * sizeMultiplier);
             rectangle.setWidth(width - newValue.doubleValue() - x - 39 * sizeMultiplier);
         });
         onResize.add((width, height) -> rectangle.setWidth(width - label.getWidth() - x - 39 * sizeMultiplier));
-        label.heightProperty().addListener((observable, oldValue, newValue) -> rectangle.setY(y + newValue.doubleValue()/2 + 1));
+        label.heightProperty().addListener((observable, oldValue, newValue) -> rectangle.setY(newValue.doubleValue()/2 + 1));
         rectangle.setFill(Color.rgb(65,65,73));
-        getChildren().addAll(rectangle, label);
-        nodes.add(rectangle);
-        nodes.add(label);
+        pane.getChildren().addAll(rectangle, label);
+        getChildren().add(pane);
+        return pane;
     }
 
     public Container(double width, double height) {
