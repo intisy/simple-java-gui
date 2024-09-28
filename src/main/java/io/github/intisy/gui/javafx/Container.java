@@ -30,19 +30,22 @@ public class Container extends MappedPane {
         return this;
     }
 
-    public void addLineBreak(String name, int y, double sizeMultiplier) {
+    public void addLineBreak(String name, double y, double sizeMultiplier) {
+        addLineBreak(name, y, 16 * sizeMultiplier, sizeMultiplier);
+    }
+    public void addLineBreak(String name, double y, double x, double sizeMultiplier) {
         Label label = new Label(name);
         Font font = new Font(label.getFont().getFamily(), label.getFont().getSize()*sizeMultiplier);
         label.setFont(font);
         label.setTextFill(Colors.textColor);
         label.setLayoutY(y);
-        label.setLayoutX(16 * sizeMultiplier);
+        label.setLayoutX(x);
         Rectangle rectangle = new Rectangle(0, 0, 0, 0.5);
         label.widthProperty().addListener((observable, oldValue, newValue) -> {
-            rectangle.setX(newValue.doubleValue()+25 * sizeMultiplier);
-            rectangle.setWidth(width - newValue.doubleValue() - 55 * sizeMultiplier);
+            rectangle.setX(newValue.doubleValue() + x + 9 * sizeMultiplier);
+            rectangle.setWidth(width - newValue.doubleValue() - x - 39 * sizeMultiplier);
         });
-        onResize.add((width, height) -> rectangle.setWidth(width - label.getWidth() - 55 * sizeMultiplier));
+        onResize.add((width, height) -> rectangle.setWidth(width - label.getWidth() - x - 39 * sizeMultiplier));
         label.heightProperty().addListener((observable, oldValue, newValue) -> rectangle.setY(y + newValue.doubleValue()/2 + 1));
         rectangle.setFill(Color.rgb(65,65,73));
         getChildren().addAll(rectangle, label);
