@@ -25,6 +25,8 @@ public class Container extends MappedPane {
     public Rectangle bg1, bg2, outlineTopHitbox, outlineRightHitbox;
     double x;
     double y;
+    double oldWidth;
+    double oldHeight;
     public List<Object> onResize = new ArrayList<>();
     public Container setResizable(boolean resizable) {
         this.resizable = resizable;
@@ -98,7 +100,7 @@ public class Container extends MappedPane {
         return false;
     }
     public Container setWidth(float width) {
-        double oldWidth = this.width;
+        oldWidth = this.width;
         this.width = width;
         super.setWidth(width);
         if (outlineRightHitbox != null)
@@ -108,7 +110,7 @@ public class Container extends MappedPane {
         return this;
     }
     public Container setHeight(float height) {
-        double oldHeight = this.height;
+        oldHeight = this.height;
         this.height = height;
         super.setWidth(height);
         if (outlineRightHitbox != null)
@@ -193,7 +195,7 @@ public class Container extends MappedPane {
         }
         return false;
     }
-    public void addOnResize(SizeInterface action) {
+    public void addOnResize(Object action) {
         onResize.add(action);
     }
     public void callOnResize(double width, double height) {
@@ -203,6 +205,8 @@ public class Container extends MappedPane {
                 ((SizeInterface) action).execute(width, height);
             } else if (action instanceof ContainerInterface) {
                 ((ContainerInterface) action).execute(this);
+            } else if (action instanceof ChangeInterface) {
+                ((ChangeInterface) action).execute(width - oldWidth, height - oldHeight);
             }
         }
     }
@@ -442,6 +446,11 @@ public class Container extends MappedPane {
         getChildren().clear();
         onResize.clear();
         drawContainer();
+    }
+
+    @FunctionalInterface
+    public interface ChangeInterface {
+        void execute(double width, double height);
     }
 
     @FunctionalInterface

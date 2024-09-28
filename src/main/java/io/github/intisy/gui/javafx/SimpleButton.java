@@ -18,9 +18,9 @@ import java.awt.event.MouseListener;
 public class SimpleButton extends Button {
     double height;
     double width;
-    private Color strokeColor = Color.WHITE;
-    private Color selectedStrokeColor = Color.BLUE;
-    private Color textFillColor = Color.BLACK;
+    private Color strokeColor = Colors.strokeColor;
+    private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
+    private Color textFillColor = Colors.textColor;
     private boolean selected;
     private Label label;
     public SimpleButton(String text, double arc) {
@@ -39,7 +39,7 @@ public class SimpleButton extends Button {
         super(width, height);
         this.height = height;
         this.width = width;
-        rectangle.setFill(Color.WHITE);
+        rectangle.setFill(Colors.lightBackgroundColor);
         rectangle.setArcWidth(arc);
         rectangle.setArcHeight(arc);
         rectangle.setStroke(strokeColor);

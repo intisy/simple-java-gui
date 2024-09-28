@@ -7,9 +7,9 @@ import javafx.scene.shape.Rectangle;
 
 public class Switch extends Region {
     public boolean selected;
-    public Color background = Color.DARKGRAY;
-    public Color activated = Color.LIGHTBLUE;
-    public Color foreground = Color.BLACK;
+    public Color background = Colors.backgroundColor;
+    public Color activated = Colors.selectedStrokeColorBlue;
+    public Color foreground = Colors.lightBackgroundColor;
     public double width;
     public double height;
     public Switch(double width, double height) {

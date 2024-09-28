@@ -29,10 +29,10 @@ public class SimpleComboBox<T> extends Pane {
     private Polygon arrow;
     double height;
     double width;
-    private Color strokeColor = Color.WHITE;
-    private Color selectedStrokeColor = Color.BLUE;
-    private Color textFillColor = Color.BLACK;
-    private Color selectedBackground = Color.BLACK;
+    private Color strokeColor = Colors.strokeColor;
+    private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
+    private Color textFillColor = Colors.textColor;
+    private Color selectedBackground = Colors.selectedBackgroundColorBlue;
 
     public SimpleComboBox() {
         initializeComboBox(100, 30, 10);
@@ -66,7 +66,7 @@ public class SimpleComboBox<T> extends Pane {
         this.width = width;
         double multiplier = Math.min(height, width)/25;
         rectangle = new Rectangle(width, height);
-        rectangle.setFill(Color.WHITE);
+        rectangle.setFill(Colors.lightBackgroundColor);
         rectangle.setArcWidth(arc);
         rectangle.setArcHeight(arc);
         rectangle.setStroke(strokeColor);

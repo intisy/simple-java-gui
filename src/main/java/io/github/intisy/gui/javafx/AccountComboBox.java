@@ -35,9 +35,9 @@ public class AccountComboBox extends HoverPane {
     private HoverPane plusShape;
     private HoverPane selectedPane;
     private final double sizeMultiplier;
-    private Color strokeColor = Color.WHITE;
-    private Color selectedStrokeColor = Color.BLUE;
-    private Color selectedBackground = Color.BLACK;
+    private Color strokeColor = Colors.strokeColor;
+    private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
+    private Color selectedBackground = Colors.selectedBackgroundColorBlue;
     public void setBackgroundColor(Color color) {
         rectangle.setFill(color);
     }
@@ -94,7 +94,7 @@ public class AccountComboBox extends HoverPane {
         this.height = height;
         this.width = width;
         rectangle = new Rectangle(width, height);
-        rectangle.setFill(Color.WHITE);
+        rectangle.setFill(Colors.lightBackgroundColor);
         rectangle.setArcWidth(arc);
         rectangle.setArcHeight(arc);
         rectangle.setStroke(strokeColor);
