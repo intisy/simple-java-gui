@@ -1,7 +1,6 @@
 package io.github.intisy.gui.javafx;
 
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -26,7 +25,7 @@ public class Container extends MappedPane {
     public Rectangle bg1, bg2, outlineTopHitbox, outlineRightHitbox;
     double x;
     double y;
-    public List<Interface> onResize = new ArrayList<>();
+    public List<Object> onResize = new ArrayList<>();
     public Container setResizable(boolean resizable) {
         this.resizable = resizable;
         return this;
@@ -49,7 +48,7 @@ public class Container extends MappedPane {
             rectangle.setX(newValue.doubleValue() + 9 * sizeMultiplier);
             rectangle.setWidth(width - newValue.doubleValue() - x - 39 * sizeMultiplier);
         });
-        onResize.add((width, height) -> rectangle.setWidth(width - label.getWidth() - x - 39 * sizeMultiplier));
+        onResize.add((SizeInterface) (width, height) -> rectangle.setWidth(width - label.getWidth() - x - 39 * sizeMultiplier));
         label.heightProperty().addListener((observable, oldValue, newValue) -> rectangle.setY(newValue.doubleValue()/2 + 1));
         rectangle.setFill(Color.rgb(65,65,73));
         pane.getChildren().addAll(rectangle, label);
@@ -194,18 +193,20 @@ public class Container extends MappedPane {
         }
         return false;
     }
-    public void addOnResize(Interface action) {
+    public void addOnResize(SizeInterface action) {
         onResize.add(action);
     }
     public void callOnResize(double width, double height) {
-        for (Interface action : onResize) {
-            action.execute(width, height);
+        for (Object action : onResize) {
+            if (action instanceof SizeInterface) {
+                ((SizeInterface) action).execute(width, height);
+            } else if (action instanceof ContainerInterface) {
+                ((ContainerInterface) action).execute(this);
+            }
         }
     }
     public void callOnResize() {
-        for (Interface action : onResize) {
-            action.execute(width, height);
-        }
+        callOnResize(width, height);
     }
     public Container setOutline(int side, boolean outline, String name, MappedParent children, boolean resizable) {
         switch (side) {
@@ -443,7 +444,12 @@ public class Container extends MappedPane {
     }
 
     @FunctionalInterface
-    public interface Interface {
+    public interface SizeInterface {
         void execute(double width, double height);
+    }
+
+    @FunctionalInterface
+    public interface ContainerInterface {
+        void execute(Container container);
     }
 }
