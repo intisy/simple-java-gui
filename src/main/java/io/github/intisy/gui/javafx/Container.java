@@ -197,7 +197,8 @@ public class Container extends MappedPane {
         onResize.add(action);
     }
     public void callOnResize(double width, double height) {
-        for (Object action : onResize) {
+        List<Object> onResizeClone = new ArrayList<>(onResize);
+        for (Object action : onResizeClone) {
             if (action instanceof SizeInterface) {
                 ((SizeInterface) action).execute(width, height);
             } else if (action instanceof ContainerInterface) {
