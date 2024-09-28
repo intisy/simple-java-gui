@@ -1,6 +1,7 @@
 package io.github.intisy.gui.javafx;
 
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -25,6 +26,7 @@ public class Container extends MappedPane {
     double x;
     double y;
     public List<Interface> onResize = new ArrayList<>();
+    List<Node> nodes = new ArrayList<>();
     public Container setResizable(boolean resizable) {
         this.resizable = resizable;
         return this;
@@ -33,6 +35,12 @@ public class Container extends MappedPane {
     public void addLineBreak(String name, double y, double sizeMultiplier) {
         addLineBreak(name, y, 16 * sizeMultiplier, sizeMultiplier);
     }
+
+    public void clearLineBreaks() {
+        getChildren().removeAll(nodes);
+        nodes.clear();
+    }
+
     public void addLineBreak(String name, double y, double x, double sizeMultiplier) {
         Label label = new Label(name);
         Font font = new Font(label.getFont().getFamily(), label.getFont().getSize()*sizeMultiplier);
@@ -49,6 +57,8 @@ public class Container extends MappedPane {
         label.heightProperty().addListener((observable, oldValue, newValue) -> rectangle.setY(y + newValue.doubleValue()/2 + 1));
         rectangle.setFill(Color.rgb(65,65,73));
         getChildren().addAll(rectangle, label);
+        nodes.add(rectangle);
+        nodes.add(label);
     }
 
     public Container(double width, double height) {
