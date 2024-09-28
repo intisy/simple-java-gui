@@ -40,9 +40,9 @@ public class Title extends Container {
         jfxMinimizeButton.setBackgroundColor(Color.rgb(72,75,77));
         jfxMinimizeButton.setOnAction(actionEvent -> frame.setState(JFrame.ICONIFIED));
         getChildren().addAll(jfxMinimizeButton, jfxCloseButton);
-        addOnResize((w, h) -> {
-            jfxCloseButton.setLayoutX((w - 50*sizeMultiplier));
-            jfxMinimizeButton.setLayoutX((w - 100*sizeMultiplier));
+        addOnResize((SizeInterface) (w, h) -> {
+            jfxCloseButton.setLayoutX((w - 50 * sizeMultiplier));
+            jfxMinimizeButton.setLayoutX((w - 100 * sizeMultiplier));
         });
         callOnResize(width, height);
         setColor(Color.rgb(60,63,65));
