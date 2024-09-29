@@ -1,10 +1,10 @@
 package io.github.intisy.gui.javafx;
 
-import io.github.intisy.gui.listeners.ScreenListener;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -16,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class AccountComboBox extends HoverPane {
         }
         return pane;
     }
-    public AccountComboBox(List<Map<String, String>> data, double width, double height, double arc, boolean auto) {
+    public AccountComboBox(List<Map<String, String>> data, JFXPanel panel, double width, double height, double arc, boolean auto) {
         sizeMultiplier = width/265;
         internalComboBox = new ComboBox<>();
         internalComboBox.getItems().setAll(data);
@@ -114,32 +115,12 @@ public class AccountComboBox extends HoverPane {
         arrow.setFill(Color.rgb(147,163,170));
 
         getChildren().addAll(rectangle, arrow, selectedPane);
-        ScreenListener.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (!isHover()) {
                     Platform.runLater(() -> hide());
                 }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
         setOnMouseMoved(event -> {

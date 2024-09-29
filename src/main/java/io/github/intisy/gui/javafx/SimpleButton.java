@@ -1,9 +1,9 @@
 package io.github.intisy.gui.javafx;
 
-import io.github.intisy.gui.listeners.ScreenListener;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
+import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -23,19 +24,19 @@ public class SimpleButton extends Button {
     private Color textFillColor = Colors.textColor;
     private boolean selected;
     private Label label;
-    public SimpleButton(String text, double arc) {
-        this(text, 100, 30, arc);
+    public SimpleButton(String text, JFXPanel panel, double arc) {
+        this(text, panel, 100, 30, arc);
     }
-    public SimpleButton(String text) {
-        this(text, 100, 30, 10);
+    public SimpleButton(String text, JFXPanel panel) {
+        this(text, panel, 100, 30, 10);
     }
-    public SimpleButton() {
-        this("", 100, 30, 10);
+    public SimpleButton(JFXPanel panel) {
+        this("", panel, 100, 30, 10);
     }
-    public SimpleButton(String text, double width, double height) {
-        this(text, width, height, 10);
+    public SimpleButton(String text, JFXPanel panel, double width, double height) {
+        this(text, panel, width, height, 10);
     }
-    public SimpleButton(String text, double width, double height, double arc) {
+    public SimpleButton(String text, JFXPanel panel, double width, double height, double arc) {
         super(width, height);
         this.height = height;
         this.width = width;
@@ -55,32 +56,12 @@ public class SimpleButton extends Button {
         label.setLayoutX((width - fontText.getBoundsInLocal().getWidth()) /2);
 
         getChildren().addAll(rectangle, label);
-        ScreenListener.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (!isHover()) {
                     Platform.runLater(() -> hide());
                 }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
         setOnMouseClicked(event -> {

@@ -1,8 +1,8 @@
 package io.github.intisy.gui.javafx;
 
-import io.github.intisy.gui.listeners.ScreenListener;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -13,20 +13,20 @@ import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"unchecked", "unused"})
 public class SimpleComboBox<T> extends Pane {
 
-    private ComboBox<T> internalComboBox;
-    private Rectangle rectangle;
+    private final ComboBox<T> internalComboBox;
+    private final Rectangle rectangle;
     private Node selection;
-    private Label selected;
+    private final Label selected;
     private final List<Label> items = new ArrayList<>();
-    private Polygon arrow;
+    private final Polygon arrow;
     double height;
     double width;
     private Color strokeColor = Colors.strokeColor;
@@ -34,33 +34,13 @@ public class SimpleComboBox<T> extends Pane {
     private Color textFillColor = Colors.textColor;
     private Color selectedBackground = Colors.selectedBackgroundColorBlue;
 
-    public SimpleComboBox() {
-        initializeComboBox(100, 30, 10);
+    public SimpleComboBox(JFXPanel panel) {
+        this(100, 30, 10, panel);
     }
-    public SimpleComboBox(double width, double height) {
-        initializeComboBox(width, height, 10);
+    public SimpleComboBox(double width, double height, JFXPanel panel) {
+        this(width, height, 10, panel);
     }
-    public SimpleComboBox(double width, double height, double arc) {
-        initializeComboBox(width, height, arc);
-    }
-    public void setBackgroundColor(Color color) {
-        rectangle.setFill(color);
-    }
-    public void setSelectedBackgroundColor(Color color) {
-        selectedBackground = color;
-    }
-    public void setTextFill(Color color) {
-        selected.setTextFill(color);
-        textFillColor = color;
-    }
-    public void setStrokeColor(Color color) {
-        strokeColor = color;
-        rectangle.setStroke(color);
-    }
-    public void setSelectedStrokeColor(Color color) {
-        selectedStrokeColor = color;
-    }
-    private void initializeComboBox(double width, double height, double arc) {
+    public SimpleComboBox(double width, double height, double arc, JFXPanel panel) {
         internalComboBox = new ComboBox<>();
         this.height = height;
         this.width = width;
@@ -89,32 +69,12 @@ public class SimpleComboBox<T> extends Pane {
         arrow.setFill(Color.rgb(147,163,170));
 
         getChildren().addAll(rectangle, arrow, selected);
-        ScreenListener.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-            }
-
+        panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (!isHover()) {
                     Platform.runLater(() -> hide());
                 }
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
         setOnMouseMoved(event -> {
@@ -172,6 +132,23 @@ public class SimpleComboBox<T> extends Pane {
                     selected.setLayoutY((height - newFont.getBoundsInLocal().getHeight()) /2);
                     selected.setText((String) newValue);
                 });
+    }
+    public void setBackgroundColor(Color color) {
+        rectangle.setFill(color);
+    }
+    public void setSelectedBackgroundColor(Color color) {
+        selectedBackground = color;
+    }
+    public void setTextFill(Color color) {
+        selected.setTextFill(color);
+        textFillColor = color;
+    }
+    public void setStrokeColor(Color color) {
+        strokeColor = color;
+        rectangle.setStroke(color);
+    }
+    public void setSelectedStrokeColor(Color color) {
+        selectedStrokeColor = color;
     }
     public double getNewHeight() {
         return height;
