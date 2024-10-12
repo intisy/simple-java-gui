@@ -16,11 +16,15 @@ public class ResizablePanel extends MappedJFXPanel {
     public double offsetRadius;
     double hitboxRadius = 5;
     public List<Object> resizeEvents = new ArrayList<>();
-    JDialog dialog;
-    JFrame frame;
+    private JDialog dialog;
+    private JFrame frame;
 
     public void setDialog(JDialog dialog) {
         this.dialog = dialog;
+    }
+
+    public JDialog getDialog() {
+        return dialog;
     }
 
     public ResizablePanel(double width, double height, double offsetRadius, JDialog dialog) {
