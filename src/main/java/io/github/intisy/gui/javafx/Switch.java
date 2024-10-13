@@ -9,7 +9,7 @@ public class Switch extends Region {
     public boolean selected;
     public Color background = Colors.lightBackgroundColor;
     public Color activated = Colors.selectedStrokeColorBlue;
-    public Color foreground = Colors.strokeColor;
+    public Color foreground = Colors.textColor;
     public double width;
     public double height;
     public Switch(double width, double height) {
