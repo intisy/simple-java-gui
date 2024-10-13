@@ -26,6 +26,11 @@ public class Window {
     JDialog dialog;
     ResizablePanel jfxPanel;
     SimpleSVGButton jfxCloseButton;
+
+    public JDialog getDialog() {
+        return dialog;
+    }
+
     public Window() {
         this(300, 200, 10);
     }
