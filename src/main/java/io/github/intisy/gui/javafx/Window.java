@@ -31,6 +31,10 @@ public class Window {
         return dialog;
     }
 
+    public ResizablePanel getJfxPanel() {
+        return jfxPanel;
+    }
+
     public Window() {
         this(300, 200, 10);
     }
