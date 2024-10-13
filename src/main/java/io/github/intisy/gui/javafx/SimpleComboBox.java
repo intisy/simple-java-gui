@@ -101,7 +101,7 @@ public class SimpleComboBox<T> extends Pane {
                     }
                 }
                 hide();
-            } else if (rectangle.isHover()) {
+            } else if (rectangle.isHover() || arrow.isHover() || selected.isHover()) {
                 internalComboBox.show();
                 getChildren().remove(arrow);
                 rectangle.setStroke(selectedStrokeColor);
