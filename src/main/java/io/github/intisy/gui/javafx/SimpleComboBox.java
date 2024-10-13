@@ -72,13 +72,13 @@ public class SimpleComboBox<T> extends Pane {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (!isHover()) {
+                if (!isChildrenHover()) {
                     Platform.runLater(() -> hide());
                 }
             }
         });
         setOnMouseMoved(event -> {
-            if (internalComboBox.isShowing()) {
+            if (internalComboBox.isShowing() && isChildrenHover()) {
                 mouseEvent(event);
             }
         });
@@ -101,7 +101,7 @@ public class SimpleComboBox<T> extends Pane {
                     }
                 }
                 hide();
-            } else if (rectangle.isHover() || arrow.isHover() || selected.isHover()) {
+            } else if (isChildrenHover()) {
                 internalComboBox.show();
                 getChildren().remove(arrow);
                 rectangle.setStroke(selectedStrokeColor);
@@ -132,6 +132,13 @@ public class SimpleComboBox<T> extends Pane {
                     selected.setLayoutY((height - newFont.getBoundsInLocal().getHeight()) /2);
                     selected.setText((String) newValue);
                 });
+    }
+    public boolean isChildrenHover() {
+        for (Node node : getChildren()) {
+            if (node.isHover())
+                return true;
+        }
+        return false;
     }
     public void setBackgroundColor(Color color) {
         rectangle.setFill(color);
