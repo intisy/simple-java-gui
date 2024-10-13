@@ -83,46 +83,48 @@ public class SimpleComboBox<T> extends Pane {
             }
         });
         setOnMouseClicked(event -> {
-            int id = selected.getText().isEmpty() ? 1 : 0;
-            if (internalComboBox.isShowing()) {
-                int index = (int) (event.getY() / height);
-                if (index < internalComboBox.getItems().size()+id) {
-                    if (!(index == 0)) {
-                        ObservableList<String> items = (ObservableList<String>) internalComboBox.getItems();
-                        int i = 0;
-                        for (String item : items)
-                            if (!item.equals(selected.getText())) {
-                                if (i == index-1) {
-                                    selected.setText(item);
-                                    getSelectionModel().select((T) item);
+            if (rectangle.isHover()) {
+                int id = selected.getText().isEmpty() ? 1 : 0;
+                if (internalComboBox.isShowing()) {
+                    int index = (int) (event.getY() / height);
+                    if (index < internalComboBox.getItems().size() + id) {
+                        if (!(index == 0)) {
+                            ObservableList<String> items = (ObservableList<String>) internalComboBox.getItems();
+                            int i = 0;
+                            for (String item : items)
+                                if (!item.equals(selected.getText())) {
+                                    if (i == index - 1) {
+                                        selected.setText(item);
+                                        getSelectionModel().select((T) item);
+                                    }
+                                    i++;
                                 }
-                                i++;
-                            }
+                        }
                     }
-                }
-                hide();
-            } else {
-                internalComboBox.show();
-                getChildren().remove(arrow);
-                rectangle.setStroke(selectedStrokeColor);
-                rectangle.setStrokeWidth(3);
-                rectangle.setHeight(height*(internalComboBox.getItems().size()+id));
-                int index = 0;
-                for (T item : internalComboBox.getItems()) {
-                    if (!item.equals(selected.getText())) {
-                        index++;
-                        Label itemLabel = new Label((String) item);
-                        itemLabel.setTextFill(textFillColor);
-                        itemLabel.setFont(font);
-                        Text newFont = new Text((String) item);
-                        newFont.setFont(font);
-                        itemLabel.setLayoutY((height - newFont.getBoundsInLocal().getHeight()) /2 + index * height);
-                        itemLabel.setLayoutX(selected.getLayoutX());
-                        getChildren().add(itemLabel);
-                        items.add(itemLabel);
+                    hide();
+                } else {
+                    internalComboBox.show();
+                    getChildren().remove(arrow);
+                    rectangle.setStroke(selectedStrokeColor);
+                    rectangle.setStrokeWidth(3);
+                    rectangle.setHeight(height * (internalComboBox.getItems().size() + id));
+                    int index = 0;
+                    for (T item : internalComboBox.getItems()) {
+                        if (!item.equals(selected.getText())) {
+                            index++;
+                            Label itemLabel = new Label((String) item);
+                            itemLabel.setTextFill(textFillColor);
+                            itemLabel.setFont(font);
+                            Text newFont = new Text((String) item);
+                            newFont.setFont(font);
+                            itemLabel.setLayoutY((height - newFont.getBoundsInLocal().getHeight()) / 2 + index * height);
+                            itemLabel.setLayoutX(selected.getLayoutX());
+                            getChildren().add(itemLabel);
+                            items.add(itemLabel);
+                        }
                     }
+                    mouseEvent(event);
                 }
-                mouseEvent(event);
             }
         });
         getSelectionModel().selectedItemProperty().addListener(
