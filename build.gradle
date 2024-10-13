@@ -9,7 +9,4 @@ online {
             "https://raw.githubusercontent.com/intisy/gradle-snippets/main/default.preset",
             "https://raw.githubusercontent.com/intisy/gradle-snippets/main/publish.preset"
     ]
-    urls = [
-            "https://raw.githubusercontent.com/intisy/gradle-snippets/main/javaCompile.gradle:1.8"
-    ]
 }
