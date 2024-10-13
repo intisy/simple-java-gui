@@ -92,6 +92,7 @@ public class TextArea extends Pane {
             }
         });
         setOnMouseClicked(event -> {
+            scrollPane.requestFocus();
             focused = true;
             rectangle.setStroke(selectedStrokeColor);
             rectangle.setStrokeWidth(3);
