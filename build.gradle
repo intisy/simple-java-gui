@@ -9,21 +9,7 @@ online {
             "https://raw.githubusercontent.com/intisy/gradle-snippets/main/default.preset",
             "https://raw.githubusercontent.com/intisy/gradle-snippets/main/publish.preset"
     ]
-//    urls = [
-//            "https://raw.githubusercontent.com/intisy/gradle-snippets/main/javaCompile.gradle:1.8"
-//    ]
-}
-
-compile {
-    debug = true
-    windows {
-        jreUrl = "https://download.bell-sw.com/java/8u422+6/bellsoft-jre8u422+6-windows-amd64-full.zip"
-        jdkUrl = "https://download.bell-sw.com/java/8u422+6/bellsoft-jdk8u422+6-windows-amd64-full.zip"
-    }
-    linux {
-        jdkUrl = "https://download.bell-sw.com/java/8u422+6/bellsoft-jdk8u422+6-linux-amd64-full.tar.gz"
-    }
-    macOS {
-        jdkUrl = "https://download.bell-sw.com/java/8u422+6/bellsoft-jdk8u422+6-macos-aarch64-full.tar.gz"
-    }
+    urls = [
+            "https://raw.githubusercontent.com/intisy/gradle-snippets/main/javaCompile.gradle:1.8"
+    ]
 }
