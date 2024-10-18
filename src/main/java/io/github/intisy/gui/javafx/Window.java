@@ -108,6 +108,17 @@ public class Window {
                 rectangle.setEffect(blur);
                 Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
                 divider.setFill(Color.rgb(60, 63, 65));
+                Group closeShape = new Group(
+                        new Line(0, 0, iconSize, iconSize),
+                        new Line(0, iconSize, iconSize, 0)
+                );
+                closeShape.setLayoutX((30 * sizeMultiplier - iconSize) / 2);
+                closeShape.setLayoutY((40 * sizeMultiplier - iconSize) / 2);
+                closeShape.getChildren().forEach(line -> ((Line) line).setStroke(Color.WHITE));
+                jfxCloseButton = new SimpleSVGButton(closeShape, 30 * sizeMultiplier, 40 * sizeMultiplier);
+                jfxCloseButton.setBackgroundColor(Color.rgb(201, 79, 79));
+                jfxCloseButton.setLayoutX((width - 30) * sizeMultiplier);
+                jfxCloseButton.setOnAction(actionEvent -> close());
                 title.getChildren().add(jfxCloseButton);
                 final Point[] clickPoint = new Point[1];
                 title.setOnMousePressed(event -> clickPoint[0] = new Point((int) event.getX(), (int) event.getY()));
@@ -120,7 +131,7 @@ public class Window {
                 jfxPanel.getMappedParent().addAll("window.divider", divider, "window.title", title, "window.main", main);
             } else {
                 Container main = new Container(width, height).setY(blurRadius).setX(blurRadius);
-                jfxPanel.getMappedParent().addAll("window.main", main);
+                jfxPanel.getMappedParent().add("window.main", main);
             }
             dialog.addWindowFocusListener(new WindowFocusListener() {
                 @Override
@@ -143,17 +154,6 @@ public class Window {
                     });
                 }
             });
-            Group closeShape = new Group(
-                    new Line(0, 0, iconSize, iconSize),
-                    new Line(0, iconSize, iconSize, 0)
-            );
-            closeShape.setLayoutX((30 * sizeMultiplier - iconSize) / 2);
-            closeShape.setLayoutY((40 * sizeMultiplier - iconSize) / 2);
-            closeShape.getChildren().forEach(line -> ((Line) line).setStroke(Color.WHITE));
-            jfxCloseButton = new SimpleSVGButton(closeShape, 30 * sizeMultiplier, 40 * sizeMultiplier);
-            jfxCloseButton.setBackgroundColor(Color.rgb(201, 79, 79));
-            jfxCloseButton.setLayoutX((width - 30) * sizeMultiplier);
-            jfxCloseButton.setOnAction(actionEvent -> close());
             jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline);
             jfxPanel.toFront();
         });
