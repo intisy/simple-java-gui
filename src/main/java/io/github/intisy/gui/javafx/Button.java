@@ -12,6 +12,8 @@ public class Button extends HoverPane {
         rectangle = new Rectangle(width, height);
         setWidth(width);
         setWidth(height);
+        this.width = width;
+        this.height = height;
     }
 
     public void setBackgroundColor(Color color) {
