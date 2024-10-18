@@ -125,6 +125,7 @@ public class Window {
                     });
                 }
             });
+            jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline);
             if (isTitleEnabled()) {
                 rectangle.setEffect(blur);
                 Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
@@ -154,7 +155,6 @@ public class Window {
                 Container main = new Container(width, height).setY(blurRadius).setX(blurRadius);
                 jfxPanel.getMappedParent().add("window.main", main);
             }
-            jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline);
             jfxPanel.toFront();
         });
     }
