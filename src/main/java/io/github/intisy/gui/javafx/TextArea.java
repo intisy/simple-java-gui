@@ -316,6 +316,8 @@ public class TextArea extends Pane {
             textFlow.getChildren().add(caretIndex, node);
             caretIndex++;
         }
+        if (!textFlow.getChildren().isEmpty())
+            label.setVisible(false);
     }
 
     private void copySelectedText() {
