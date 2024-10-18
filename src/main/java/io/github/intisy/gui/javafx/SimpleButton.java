@@ -23,7 +23,7 @@ public class SimpleButton extends Button {
     private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
     private Color textFillColor = Colors.textColor;
     private boolean selected;
-    private final Label label;
+    private Label label;
     private Node graphic;
     public SimpleButton(String text, JFXPanel panel, double arc) {
         this(text, panel, 100, 30, arc);
@@ -38,6 +38,12 @@ public class SimpleButton extends Button {
         this(text, panel, width, height, 10);
     }
     public SimpleButton(String text, JFXPanel panel, double width, double height, double arc) {
+        this(null, text, panel, width, height, 10);
+    }
+    public SimpleButton(Node graphic, JFXPanel panel, double width, double height, double arc) {
+        this(graphic, null, panel, width, height, 10);
+    }
+    public SimpleButton(Node graphic, String text, JFXPanel panel, double width, double height, double arc) {
         super(width, height);
         this.height = height;
         this.width = width;
@@ -47,16 +53,21 @@ public class SimpleButton extends Button {
         rectangle.setStroke(strokeColor);
         rectangle.setStrokeWidth(1);
 
-        label = new Label(text);
-        label.setTextFill(textFillColor);
-        Font font = new Font(label.getFont().getFamily(), label.getFont().getSize()*(Math.min(height, width)/22));
-        label.setFont(font);
-        Text fontText = new Text(text);
-        fontText.setFont(font);
-        label.setLayoutY((height - fontText.getBoundsInLocal().getHeight()) /2);
-        label.setLayoutX((width - fontText.getBoundsInLocal().getWidth()) /2);
-
-        getChildren().addAll(rectangle, label);
+        getChildren().add(rectangle);
+        if (text != null) {
+            label = new Label(text);
+            label.setTextFill(textFillColor);
+            Font font = new Font(label.getFont().getFamily(), label.getFont().getSize()*(Math.min(height, width)/22));
+            label.setFont(font);
+            Text fontText = new Text(text);
+            fontText.setFont(font);
+            label.setLayoutY((height - fontText.getBoundsInLocal().getHeight()) /2);
+            label.setLayoutX((width - fontText.getBoundsInLocal().getWidth()) /2);
+            getChildren().add(label);
+        }
+        if (graphic != null) {
+            setGraphic(graphic);
+        }
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
