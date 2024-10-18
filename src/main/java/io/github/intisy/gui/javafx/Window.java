@@ -23,6 +23,7 @@ public class Window {
     double height;
     double width;
     double sizeMultiplier;
+    boolean titleEnabled = true;
     JDialog dialog;
     ResizablePanel jfxPanel;
     SimpleSVGButton jfxCloseButton;
@@ -45,6 +46,14 @@ public class Window {
         sizeMultiplier = blurRadius / 10;
     }
 
+    public boolean isTitleEnabled() {
+        return titleEnabled;
+    }
+
+    public void setTitleEnabled(boolean titleEnabled) {
+        this.titleEnabled = titleEnabled;
+    }
+
     public void open(JFrame frame) {
         jfxPanel = new ResizablePanel(width, height, blurRadius);
         SwingUtilities.invokeLater(() -> {
@@ -58,8 +67,6 @@ public class Window {
             dialog.getRootPane().setBackground(new java.awt.Color(0, 0, 0, 0));
             jfxPanel.setDialog(dialog);
             jfxPanel.addOnResize((width, height) -> {
-                Rectangle divider = (Rectangle) jfxPanel.getMappedParent().get("window.divider");
-                divider.setWidth(width);
                 Rectangle outline = (Rectangle) jfxPanel.getMappedParent().get("window.outline");
                 outline.setWidth(width+outlineRadius*2);
                 outline.setHeight(height+outlineRadius*2);
@@ -68,37 +75,59 @@ public class Window {
                 blur.setWidth(width);
                 blur.toBack();
                 Container main = (Container) jfxPanel.getMappedParent().get("window.main");
-                main.setCurrentHeight(height - 40 * sizeMultiplier, true);
+                if (isTitleEnabled()) {
+                    Rectangle divider = (Rectangle) jfxPanel.getMappedParent().get("window.divider");
+                    divider.setWidth(width);
+                    main.setCurrentHeight(height - 40 * sizeMultiplier, true);
+                    Container title = (Container) jfxPanel.getMappedParent().get("window.title");
+                    title.setCurrentWidth(width, true);
+                    jfxCloseButton.setLayoutX((width - 30)*sizeMultiplier);
+                } else {
+                    main.setCurrentHeight(height, true);
+                }
                 main.setCurrentWidth(width, true);
-                Container title = (Container) jfxPanel.getMappedParent().get("window.title");
-                title.setCurrentWidth(width, true);
-                jfxCloseButton.setLayoutX((width - 30)*sizeMultiplier);
             });
             setContent(dialog);
             dialog.add(jfxPanel);
             dialog.setVisible(true);
         });
     }
-    public void setContent(JDialog dialog) {
+    private void setContent(JDialog dialog) {
         Platform.runLater(() -> {
             Rectangle outline = new Rectangle(blurRadius - outlineRadius, blurRadius - outlineRadius, width + outlineRadius * 2, height + outlineRadius * 2);
             outline.setFill(Color.TRANSPARENT);
-            Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
-            divider.setFill(Color.rgb(60, 63, 65));
             Rectangle rectangle = new Rectangle(blurRadius, blurRadius, width, height);
             rectangle.setFill(Color.BLACK);
             GaussianBlur blur = new GaussianBlur();
             blur.setRadius(blurRadius);
-            rectangle.setEffect(blur);
             Container title = new Container(width, 40 * sizeMultiplier)
                     .setY(blurRadius)
                     .setX(blurRadius)
                     .setColor(Color.rgb(43, 45, 48));
+            if (isTitleEnabled()) {
+                rectangle.setEffect(blur);
+                Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
+                divider.setFill(Color.rgb(60, 63, 65));
+                title.getChildren().add(jfxCloseButton);
+                final Point[] clickPoint = new Point[1];
+                title.setOnMousePressed(event -> clickPoint[0] = new Point((int) event.getX(), (int) event.getY()));
+                title.setOnMouseDragged(event -> {
+                    int xOffset = (int) (dialog.getLocation().x - clickPoint[0].x + event.getX());
+                    int yOffset = (int) (dialog.getLocation().y - clickPoint[0].y + event.getY());
+                    dialog.setLocation(xOffset, yOffset);
+                });
+                Container main = new Container(width, height - 41 * sizeMultiplier).setY(41 * sizeMultiplier + blurRadius).setX(blurRadius);
+                jfxPanel.getMappedParent().addAll("window.divider", divider, "window.title", title, "window.main", main);
+            } else {
+                Container main = new Container(width, height).setY(blurRadius).setX(blurRadius);
+                jfxPanel.getMappedParent().addAll("window.main", main);
+            }
             dialog.addWindowFocusListener(new WindowFocusListener() {
                 @Override
                 public void windowGainedFocus(WindowEvent e) {
                     Platform.runLater(() -> {
-                        title.setColor(Color.rgb(43, 45, 48));
+                        if (isTitleEnabled())
+                            title.setColor(Color.rgb(43, 45, 48));
                         outline.setFill(Color.TRANSPARENT);
                     });
                 }
@@ -106,7 +135,8 @@ public class Window {
                 @Override
                 public void windowLostFocus(WindowEvent e) {
                     Platform.runLater(() -> {
-                        title.setColor(Color.rgb(60, 63, 65));
+                        if (isTitleEnabled())
+                            title.setColor(Color.rgb(60, 63, 65));
                         outline.setFill(Color.rgb(60, 63, 65));
                         outline.toBack();
                         rectangle.toBack();
@@ -124,16 +154,7 @@ public class Window {
             jfxCloseButton.setBackgroundColor(Color.rgb(201, 79, 79));
             jfxCloseButton.setLayoutX((width - 30) * sizeMultiplier);
             jfxCloseButton.setOnAction(actionEvent -> close());
-            title.getChildren().add(jfxCloseButton);
-            final Point[] clickPoint = new Point[1];
-            title.setOnMousePressed(event -> clickPoint[0] = new Point((int) event.getX(), (int) event.getY()));
-            title.setOnMouseDragged(event -> {
-                int xOffset = (int) (dialog.getLocation().x - clickPoint[0].x + event.getX());
-                int yOffset = (int) (dialog.getLocation().y - clickPoint[0].y + event.getY());
-                dialog.setLocation(xOffset, yOffset);
-            });
-            Container main = new Container(width, height - 41 * sizeMultiplier).setY(41 * sizeMultiplier + blurRadius).setX(blurRadius);
-            jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline, "window.divider", divider, "window.title", title, "window.main", main);
+            jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline);
             jfxPanel.toFront();
         });
     }
@@ -151,7 +172,7 @@ public class Window {
     public void addOnClose(Interface action) {
         onClose.add(action);
     }
-    public void callOnClose() {
+    private void callOnClose() {
         for (Interface action : onClose) {
             action.execute();
         }
