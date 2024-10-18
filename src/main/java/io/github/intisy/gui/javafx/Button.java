@@ -13,11 +13,21 @@ public class Button extends HoverPane {
         setWidth(width);
         setWidth(height);
     }
+
     public void setBackgroundColor(Color color) {
         rectangle.setFill(color);
         this.color = color;
     }
+
     public Color getBackgroundColor() {
         return color;
+    }
+
+    public double getCurrentHeight() {
+        return this.height;
+    }
+
+    public double getCurrentWidth() {
+        return this.width;
     }
 }

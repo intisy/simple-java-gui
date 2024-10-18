@@ -23,7 +23,7 @@ public class SimpleButton extends Button {
     private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
     private Color textFillColor = Colors.textColor;
     private boolean selected;
-    private Label label;
+    private final Label label;
     public SimpleButton(String text, JFXPanel panel, double arc) {
         this(text, panel, 100, 30, arc);
     }
@@ -74,6 +74,9 @@ public class SimpleButton extends Button {
             }
             onAction.getValue().handle(new ActionEvent());
         });
+    }
+    public void setText(String text) {
+        label.setText(text);
     }
     public void setTextFill(Color color) {
         label.setTextFill(color);
