@@ -6,6 +6,7 @@ import javafx.beans.property.ObjectPropertyBase;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -13,7 +14,6 @@ import javafx.scene.text.Text;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 @SuppressWarnings("unused")
 public class SimpleButton extends Button {
@@ -24,6 +24,7 @@ public class SimpleButton extends Button {
     private Color textFillColor = Colors.textColor;
     private boolean selected;
     private final Label label;
+    private Node graphic;
     public SimpleButton(String text, JFXPanel panel, double arc) {
         this(text, panel, 100, 30, arc);
     }
@@ -75,6 +76,18 @@ public class SimpleButton extends Button {
             onAction.getValue().handle(new ActionEvent());
         });
     }
+
+    public void setGraphic(Node graphic) {
+        if (graphic != null)
+            getChildren().remove(graphic);
+        this.graphic = graphic;
+        getChildren().add(graphic);
+    }
+
+    public Node getGraphic() {
+        return graphic;
+    }
+
     public void setText(String text) {
         label.setText(text);
     }
