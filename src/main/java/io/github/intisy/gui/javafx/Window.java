@@ -104,6 +104,27 @@ public class Window {
                     .setY(blurRadius)
                     .setX(blurRadius)
                     .setColor(Color.rgb(43, 45, 48));
+            dialog.addWindowFocusListener(new WindowFocusListener() {
+                @Override
+                public void windowGainedFocus(WindowEvent e) {
+                    Platform.runLater(() -> {
+                        if (isTitleEnabled())
+                            title.setColor(Color.rgb(43, 45, 48));
+                        outline.setFill(Color.TRANSPARENT);
+                    });
+                }
+
+                @Override
+                public void windowLostFocus(WindowEvent e) {
+                    Platform.runLater(() -> {
+                        if (isTitleEnabled())
+                            title.setColor(Color.rgb(60, 63, 65));
+                        outline.setFill(Color.rgb(60, 63, 65));
+                        outline.toBack();
+                        rectangle.toBack();
+                    });
+                }
+            });
             if (isTitleEnabled()) {
                 rectangle.setEffect(blur);
                 Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
@@ -133,27 +154,6 @@ public class Window {
                 Container main = new Container(width, height).setY(blurRadius).setX(blurRadius);
                 jfxPanel.getMappedParent().add("window.main", main);
             }
-            dialog.addWindowFocusListener(new WindowFocusListener() {
-                @Override
-                public void windowGainedFocus(WindowEvent e) {
-                    Platform.runLater(() -> {
-                        if (isTitleEnabled())
-                            title.setColor(Color.rgb(43, 45, 48));
-                        outline.setFill(Color.TRANSPARENT);
-                    });
-                }
-
-                @Override
-                public void windowLostFocus(WindowEvent e) {
-                    Platform.runLater(() -> {
-                        if (isTitleEnabled())
-                            title.setColor(Color.rgb(60, 63, 65));
-                        outline.setFill(Color.rgb(60, 63, 65));
-                        outline.toBack();
-                        rectangle.toBack();
-                    });
-                }
-            });
             jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline);
             jfxPanel.toFront();
         });
