@@ -307,6 +307,17 @@ public class TextArea extends Pane {
         return stringBuilder.toString();
     }
 
+    public void setText(String text) {
+        textFlow.getChildren().clear();
+        for (int i = 0; i < text.length(); i++) {
+            String s = text.substring(i, i + 1);
+            Text node = new Text(s);
+            node.setFill(textColor);
+            textFlow.getChildren().add(caretIndex, node);
+            caretIndex++;
+        }
+    }
+
     private void copySelectedText() {
         if (hasSelection()) {
             Clipboard clipboard = Clipboard.getSystemClipboard();
