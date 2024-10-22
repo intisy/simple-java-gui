@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 @SuppressWarnings("unused")
-public class SVGButton extends Button {
+public class SVGButton extends ButtonBase {
     public boolean selected = false;
     public boolean enabled = true;
     private final Node group;

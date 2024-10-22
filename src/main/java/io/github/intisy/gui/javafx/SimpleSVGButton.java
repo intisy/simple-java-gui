@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 @SuppressWarnings("unused")
-public class SimpleSVGButton extends Button {
+public class SimpleSVGButton extends ButtonBase {
     private final Node group;
     private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
