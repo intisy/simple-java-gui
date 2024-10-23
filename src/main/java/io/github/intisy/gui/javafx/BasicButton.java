@@ -51,11 +51,7 @@ public class BasicButton extends ButtonBase {
             this.label.setLayoutX((width - fontText.getBoundsInLocal().getWidth()) /2);
             getChildren().add(this.label);
         }
-        setOnMouseClicked(event -> {
-            this.rectangle.setFill(selectedBackgroundColor);
-            this.selected = true;
-            this.onAction.getValue().handle(new ActionEvent());
-        });
+        setOnMouseClicked(event -> select());
     }
 
     public void setText(String text) {
@@ -91,6 +87,12 @@ public class BasicButton extends ButtonBase {
         this.selectedBackgroundColor = selectedBackgroundColor;
         if (selected)
             this.rectangle.setFill(selectedBackgroundColor);
+    }
+
+    public void select() {
+        this.rectangle.setFill(selectedBackgroundColor);
+        this.selected = true;
+        this.onAction.getValue().handle(new ActionEvent());
     }
 
     public void hide() {
