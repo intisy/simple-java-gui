@@ -1,19 +1,13 @@
 package io.github.intisy.gui.javafx;
 
-import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ObjectPropertyBase;
-import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 @SuppressWarnings("unused")
 public class BasicButton extends ButtonBase {
@@ -24,8 +18,8 @@ public class BasicButton extends ButtonBase {
     private Color selectedBackgroundColor;
     private boolean selected;
     private Label label;
-    private double fontHeight;
-    private double fontWidth;
+    private Double fontHeight;
+    private Double fontWidth;
     public BasicButton(String text) {
         this(text, 100, 30);
     }
@@ -48,30 +42,20 @@ public class BasicButton extends ButtonBase {
             label.widthProperty().addListener((observable, oldValue, newValue) -> {
                 Font font = this.label.getFont();
                 double size = font.getSize() * width / newValue.doubleValue() * 0.8;
-                if (size < font.getSize()) {
-                    fontHeight = height * 0.8 * size / font.getSize();
-                    fontWidth = width * 0.8;
-                    setFontSize(size);
-                }
+                fontWidth = size;
+                setFontSize(size);
             });
             label.heightProperty().addListener((observable, oldValue, newValue) -> {
                 Font font = this.label.getFont();
                 double size = font.getSize() * height / newValue.doubleValue() * 0.8;
-                if (size < font.getSize()) {
-                    fontHeight = height * 0.8;
-                    fontWidth = width * 0.8 * size / font.getSize();
-                    setFontSize(size);
-                }
+                fontHeight = size;
+                setFontSize(size);
             });
             getChildren().add(this.label);
         }
         setOnMouseClicked(event -> {
-            if (this.selected) {
-                hide();
-            } else {
-                this.rectangle.setFill(selectedBackgroundColor);
-                this.selected = true;
-            }
+            this.rectangle.setFill(selectedBackgroundColor);
+            this.selected = true;
             this.onAction.getValue().handle(new ActionEvent());
         });
     }
@@ -123,11 +107,16 @@ public class BasicButton extends ButtonBase {
         return this.label.getFont();
     }
     public final void setFont(Font font) {
-        this.label.setFont(font);
-        Text fontText = new Text(this.label.getText());
-        fontText.setFont(this.label.getFont());
-        this.label.setLayoutY((this.height - fontHeight) / 2);
-        this.label.setLayoutX((this.width - fontWidth) / 2);
+        if (fontHeight != null && fontWidth != null) {
+            this.label.setFont(font);
+            Text fontText = new Text(this.label.getText());
+            fontText.setFont(this.label.getFont());
+            double fontSize = Math.min(fontHeight, fontWidth);
+            this.label.setLayoutY((this.height - fontSize * height / font.getSize()) / 2);
+            this.label.setLayoutX((this.width - fontWidth * width / font.getSize()) / 2);
+            fontWidth = null;
+            fontHeight = null;
+        }
     }
     public final void setFontSize(double size) {
         setFont(new Font(this.label.getFont().getFamily(), size));
