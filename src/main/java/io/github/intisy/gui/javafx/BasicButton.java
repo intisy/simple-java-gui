@@ -108,12 +108,12 @@ public class BasicButton extends ButtonBase {
     }
     public final void setFont(Font font) {
         if (fontHeight != null && fontWidth != null) {
-            this.label.setFont(font);
             Text fontText = new Text(this.label.getText());
             fontText.setFont(this.label.getFont());
             double fontSize = Math.min(fontHeight, fontWidth);
             this.label.setLayoutY((this.height - fontSize * height / font.getSize()) / 2);
             this.label.setLayoutX((this.width - fontSize * width / font.getSize()) / 2);
+            this.label.setFont(font);
             System.out.println(fontHeight);
             System.out.println(fontWidth);
             System.out.println(fontSize);
