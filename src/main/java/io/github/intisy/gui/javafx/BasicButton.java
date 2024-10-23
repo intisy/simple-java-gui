@@ -24,6 +24,8 @@ public class BasicButton extends ButtonBase {
     private Color selectedBackgroundColor;
     private boolean selected;
     private Label label;
+    private double fontHeight;
+    private double fontWidth;
     public BasicButton(String text) {
         this(text, 100, 30);
     }
@@ -46,14 +48,20 @@ public class BasicButton extends ButtonBase {
             label.widthProperty().addListener((observable, oldValue, newValue) -> {
                 Font font = this.label.getFont();
                 double size = font.getSize() * width / newValue.doubleValue() * 0.8;
-                if (size < font.getSize())
+                if (size < font.getSize()) {
+                    fontHeight = height * 0.8 * size / font.getSize();
+                    fontWidth = width * 0.8;
                     setFontSize(size);
+                }
             });
             label.heightProperty().addListener((observable, oldValue, newValue) -> {
                 Font font = this.label.getFont();
                 double size = font.getSize() * height / newValue.doubleValue() * 0.8;
-                if (size < font.getSize())
+                if (size < font.getSize()) {
+                    fontHeight = height * 0.8;
+                    fontWidth = width * 0.8 * size / font.getSize();
                     setFontSize(size);
+                }
             });
             getChildren().add(this.label);
         }
@@ -118,8 +126,8 @@ public class BasicButton extends ButtonBase {
         this.label.setFont(font);
         Text fontText = new Text(this.label.getText());
         fontText.setFont(this.label.getFont());
-        this.label.setLayoutY((this.height - fontText.getBoundsInLocal().getHeight()) /2);
-        this.label.setLayoutX((this.width - fontText.getBoundsInLocal().getWidth()) /2);
+        this.label.setLayoutY((this.height - fontHeight) / 2);
+        this.label.setLayoutX((this.width - fontWidth) / 2);
     }
     public final void setFontSize(double size) {
         setFont(new Font(this.label.getFont().getFamily(), size));
