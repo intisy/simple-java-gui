@@ -8,7 +8,7 @@ public class ButtonBase extends HoverPane {
     public Color color;
     public double width;
     public double height;
-    ButtonBase(double width, double height) {
+    public ButtonBase(double width, double height) {
         rectangle = new Rectangle(width, height);
         setWidth(width);
         setWidth(height);
