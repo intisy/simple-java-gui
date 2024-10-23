@@ -43,12 +43,18 @@ public class BasicButton extends ButtonBase {
         if (text != null) {
             this.label = new Label(text);
             this.label.setTextFill(textFillColor);
-            Font font = new Font(this.label.getFont().getFamily(), this.label.getFont().getSize()*(Math.min(height, width)/22));
-            this.label.setFont(font);
-            Text fontText = new Text(text);
-            fontText.setFont(font);
-            this.label.setLayoutY((height - fontText.getBoundsInLocal().getHeight()) /2);
-            this.label.setLayoutX((width - fontText.getBoundsInLocal().getWidth()) /2);
+            label.widthProperty().addListener((observable, oldValue, newValue) -> {
+                Font font = this.label.getFont();
+                double size = font.getSize() * width / newValue.doubleValue() * 0.8;
+                if (size < font.getSize())
+                    setFontSize(size);
+            });
+            label.heightProperty().addListener((observable, oldValue, newValue) -> {
+                Font font = this.label.getFont();
+                double size = font.getSize() * height / newValue.doubleValue() * 0.8;
+                if (size < font.getSize())
+                    setFontSize(size);
+            });
             getChildren().add(this.label);
         }
         setOnMouseClicked(event -> {
@@ -114,5 +120,8 @@ public class BasicButton extends ButtonBase {
         fontText.setFont(this.label.getFont());
         this.label.setLayoutY((this.height - fontText.getBoundsInLocal().getHeight()) /2);
         this.label.setLayoutX((this.width - fontText.getBoundsInLocal().getWidth()) /2);
+    }
+    public final void setFontSize(double size) {
+        setFont(new Font(this.label.getFont().getFamily(), size));
     }
 }
