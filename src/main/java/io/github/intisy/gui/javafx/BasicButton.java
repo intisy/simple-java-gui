@@ -51,7 +51,10 @@ public class BasicButton extends ButtonBase {
             this.label.setLayoutX((width - fontText.getBoundsInLocal().getWidth()) /2);
             getChildren().add(this.label);
         }
-        setOnMouseClicked(event -> select());
+        setOnMouseClicked(event -> {
+            if (!selected)
+                select();
+        });
     }
 
     public void setText(String text) {
