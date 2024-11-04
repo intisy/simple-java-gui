@@ -88,7 +88,6 @@ public class Window {
                 main.setCurrentWidth(width, true);
             });
             setContent(dialog);
-            callOnInit();
             dialog.add(jfxPanel);
             dialog.setVisible(true);
         });
@@ -158,6 +157,7 @@ public class Window {
                 jfxPanel.getMappedParent().add("window.main", main);
             }
             jfxPanel.toFront();
+            callOnInit();
         });
     }
     public void close() {
