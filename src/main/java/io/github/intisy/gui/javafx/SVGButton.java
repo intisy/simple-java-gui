@@ -50,6 +50,7 @@ public class SVGButton extends ButtonBase {
             }
         });
     }
+
     public void setSelectedAnonymously(boolean selected) {
         this.selected = selected;
     }
@@ -70,11 +71,13 @@ public class SVGButton extends ButtonBase {
         }
 
     }
+
     public void callEvent() {
         onAction.execute(selected);
     }
-    public final void setOnAction(Interface var1) {
-        this.onAction = var1;
+
+    public final void setOnAction(Interface action) {
+        this.onAction = action;
     }
     @FunctionalInterface
     public interface Interface {

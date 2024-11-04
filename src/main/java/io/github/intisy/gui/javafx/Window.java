@@ -88,10 +88,12 @@ public class Window {
                 main.setCurrentWidth(width, true);
             });
             setContent(dialog);
+            callOnInit();
             dialog.add(jfxPanel);
             dialog.setVisible(true);
         });
     }
+
     private void setContent(JDialog dialog) {
         Platform.runLater(() -> {
             Rectangle outline = new Rectangle(blurRadius - outlineRadius, blurRadius - outlineRadius, width + outlineRadius * 2, height + outlineRadius * 2);
@@ -174,6 +176,15 @@ public class Window {
     }
     private void callOnClose() {
         for (Interface action : onClose) {
+            action.execute();
+        }
+    }
+    public List<Interface> onInit = new ArrayList<>();
+    public void addOnInit(Interface action) {
+        onInit.add(action);
+    }
+    private void callOnInit() {
+        for (Interface action : onInit) {
             action.execute();
         }
     }
