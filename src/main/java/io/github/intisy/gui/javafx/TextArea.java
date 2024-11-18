@@ -18,6 +18,7 @@ import java.awt.event.MouseAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class TextArea extends Pane {
     double width;
     double height;
@@ -27,17 +28,17 @@ public class TextArea extends Pane {
     private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
     private Color strokeColor = Colors.strokeColor;
     private final Rectangle rectangle;
-    private Label label;
-    private TextFlow textFlow;
-    private ScrollPane scrollPane;
+    private final Label label;
+    private final TextFlow textFlow;
+    private final ScrollPane scrollPane;
     private boolean focused = false;
 
     private boolean selecting = false;
     private int startSelectionIndex = -1;
     private int endSelectionIndex = -1;
 
-    private Rectangle caret;
-    private javafx.animation.Timeline blinkTimeline;
+    private final Rectangle caret;
+    private final javafx.animation.Timeline blinkTimeline;
     private int caretIndex = 0;
 
     public TextArea(double width, double height, double arc, ResizablePanel panel) {
@@ -138,9 +139,9 @@ public class TextArea extends Pane {
             if (textNode.getText().contains("\n"))
                 row++;
             else
-                while (row * defaultHeight != textNode.getLayoutY() - 5) {
+                do {
                     row++;
-                }
+                } while (row * defaultHeight != textNode.getLayoutY() - 5);
             if (lastRow != row) {
                 lastRow = row;
                 yPos = defaultHeight * (row + 1);
@@ -397,8 +398,6 @@ public class TextArea extends Pane {
 
     public void setPromptTextColor(Color promptTextColor) {
         this.promptTextColor = promptTextColor;
-//        textField.setStyle("-fx-text-fill: " + toRGBCode(textColor) + "; " +
-//                "-fx-prompt-text-fill: " + toRGBCode(promptTextColor) + ";");
     }
 
     public Color getSelectedStrokeColor() {
@@ -424,8 +423,6 @@ public class TextArea extends Pane {
 
     public void setTextColor(Color textColor) {
         this.textColor = textColor;
-//        textField.setStyle("-fx-text-fill: " + toRGBCode(textColor) + "; " +
-//                "-fx-prompt-text-fill: " + toRGBCode(promptTextColor) + ";");
     }
 
     public double getCurrentHeight() {

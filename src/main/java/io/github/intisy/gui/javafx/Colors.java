@@ -2,6 +2,7 @@ package io.github.intisy.gui.javafx;
 
 import javafx.scene.paint.Color;
 
+@SuppressWarnings("unused")
 public class Colors {
     public static Color textColor = Color.rgb(222,224,222);
     public static Color darkTextColor = Color.rgb(100, 100, 100);

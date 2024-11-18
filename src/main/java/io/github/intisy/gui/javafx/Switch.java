@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
+@SuppressWarnings("unused")
 public class Switch extends Region {
     public boolean selected;
     public Color background = Colors.lightBackgroundColor;

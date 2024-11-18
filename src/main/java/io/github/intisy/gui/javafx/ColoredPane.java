@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 
+@SuppressWarnings("unused")
 public class ColoredPane extends Pane {
     private Color color;
 

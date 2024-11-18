@@ -5,6 +5,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class MouseListener implements MouseMotionListener {
     boolean running = false;
     public List<Interface> actions = new ArrayList<>();

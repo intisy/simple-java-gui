@@ -4,10 +4,7 @@ import com.sun.javafx.collections.MapListenerHelper;
 import javafx.beans.InvalidationListener;
 import javafx.collections.MapChangeListener;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
     private ObservableEntrySet entrySet;
@@ -17,6 +14,9 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
     private MapListenerHelper<K, V> listenerHelper;
     private final Map<K, V> backingMap;
 
+    public ObservableMapWrapper() {
+        this(new HashMap<>());
+    }
     public ObservableMapWrapper(Map<K, V> map) {
         this.backingMap = map;
     }
@@ -149,20 +149,22 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
     @Override
     @SuppressWarnings("unchecked")
     public V remove(Object key) {
-        if (!backingMap.containsKey(key)) {
+        if (!backingMap.containsKey((K) key)) {
             return null;
         }
         V ret = backingMap.remove(key);
-        callObservers(new SimpleChange((K)key, ret, null, false, true));
+        callObservers(new SimpleChange((K) key, ret, null, false, true));
         return ret;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void putAll(Object... values) {
         for (int i = 0; true; i+=2) {
             if (i >= values.length)
                 break;
-            put((K) values[i], (V) values[i+1]);
+            if (values[i] != null && values[i + 1] != null)
+                put((K) values[i], (V) values[i+1]);
         }
     }
     @Override
@@ -214,7 +216,9 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
 
     @Override
     public boolean equals(Object obj) {
-        return backingMap.equals(obj);
+        if (obj instanceof Map)
+            return backingMap.equals(obj);
+        else return false;
     }
 
     @Override
@@ -234,16 +238,17 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
             return backingMap.isEmpty();
         }
 
+        @SuppressWarnings("SuspiciousMethodCalls")
         @Override
         public boolean contains(Object o) {
-            return backingMap.keySet().contains(o);
+            return backingMap.containsKey(o);
         }
 
         @Override
         public Iterator<K> iterator() {
             return new Iterator<K>() {
 
-                private Iterator<Entry<K, V>> entryIt = backingMap.entrySet().iterator();
+                private final Iterator<Entry<K, V>> entryIt = backingMap.entrySet().iterator();
                 private K lastKey;
                 private V lastValue;
                 @Override
@@ -335,7 +340,9 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
 
         @Override
         public boolean equals(Object obj) {
-            return backingMap.keySet().equals(obj);
+            if (obj instanceof Map)
+                return backingMap.keySet().equals(obj);
+            else return false;
         }
 
         @Override
@@ -357,16 +364,17 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
             return backingMap.isEmpty();
         }
 
+        @SuppressWarnings("SuspiciousMethodCalls")
         @Override
         public boolean contains(Object o) {
-            return backingMap.values().contains(o);
+            return backingMap.containsValue(o);
         }
 
         @Override
         public Iterator<V> iterator() {
             return new Iterator<V>() {
 
-                private Iterator<Entry<K, V>> entryIt = backingMap.entrySet().iterator();
+                private final Iterator<Entry<K, V>> entryIt = backingMap.entrySet().iterator();
                 private K lastKey;
                 private V lastValue;
                 @Override
@@ -464,7 +472,9 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
 
         @Override
         public boolean equals(Object obj) {
-            return backingMap.values().equals(obj);
+            if (obj instanceof Map)
+                return backingMap.values().equals(obj);
+            else return false;
         }
 
         @Override
@@ -507,15 +517,13 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
             if (!(o instanceof Map.Entry)) {
                 return false;
             }
-            Entry e = (Entry) o;
+            Entry<?, ?> e = (Entry<?, ?>) o;
             Object k1 = getKey();
             Object k2 = e.getKey();
-            if (k1 == k2 || (k1 != null && k1.equals(k2))) {
+            if (Objects.equals(k1, k2)) {
                 Object v1 = getValue();
                 Object v2 = e.getValue();
-                if (v1 == v2 || (v1 != null && v1.equals(v2))) {
-                    return true;
-                }
+                return Objects.equals(v1, v2);
             }
             return false;
         }
@@ -554,7 +562,7 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
         public Iterator<Entry<K, V>> iterator() {
             return new Iterator<Entry<K, V>>() {
 
-                private Iterator<Entry<K,V>> backingIt = backingMap.entrySet().iterator();
+                private final Iterator<Entry<K,V>> backingIt = backingMap.entrySet().iterator();
                 private K lastKey;
                 private V lastValue;
                 @Override
@@ -661,7 +669,9 @@ public class ObservableMapWrapper<K, V> implements ObservableMap<K, V> {
 
         @Override
         public boolean equals(Object obj) {
-            return backingMap.entrySet().equals(obj);
+            if (obj instanceof Map)
+                return backingMap.entrySet().equals(obj);
+            else return false;
         }
 
         @Override

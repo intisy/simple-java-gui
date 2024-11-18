@@ -1,5 +1,6 @@
 package io.github.intisy.gui.javafx;
 
+@SuppressWarnings("unused")
 public class ResizeEvent {
     boolean canceled = false;
     double width;

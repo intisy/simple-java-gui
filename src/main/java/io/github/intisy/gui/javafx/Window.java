@@ -16,6 +16,7 @@ import java.awt.event.WindowFocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Window {
     double outlineRadius = 1;
     int iconSize = 10;

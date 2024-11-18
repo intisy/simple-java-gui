@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+@SuppressWarnings("unused")
 public class ResizablePanel extends MappedJFXPanel {
     protected double tempWidth, tempHeight, height, width;
     public double offsetRadius;

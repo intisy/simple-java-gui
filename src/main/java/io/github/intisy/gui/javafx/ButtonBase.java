@@ -3,6 +3,7 @@ package io.github.intisy.gui.javafx;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+@SuppressWarnings("unused")
 public class ButtonBase extends HoverPane {
     public Rectangle rectangle;
     public Color color;

@@ -9,6 +9,7 @@ import javafx.scene.Node;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class MappedParent extends LayeredParent {
     private final ObservableMap<String, Double<Integer, Node>> children = FXCollections.observableHashMap();
     public MappedParent() {

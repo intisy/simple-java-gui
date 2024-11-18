@@ -10,7 +10,6 @@ import javafx.scene.shape.Rectangle;
 
 @SuppressWarnings("unused")
 public class SimpleSVGButton extends ButtonBase {
-    private final Node group;
     private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
@@ -29,7 +28,6 @@ public class SimpleSVGButton extends ButtonBase {
     };
     public SimpleSVGButton(Node group, double width, double height) {
         super(width, height);
-        this.group = group;
         Rectangle hitbox = new Rectangle(0, 0, width, height);
         hitbox.setFill(Color.TRANSPARENT);
         double multiplier = Math.min(height, width)/40;

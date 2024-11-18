@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import java.util.HashMap;
 
 public class MappedPane extends Pane {
-    private final ObservableMap<String, Node> children = new ObservableMapWrapper<>(new HashMap<>());
+    private final ObservableMap<String, Node> children = new ObservableMapWrapper<>();
     public MappedPane() {
         children.addListener((MapChangeListener<String, Node>) change -> {
             if (change.wasAdded()) {
