@@ -1,5 +1,7 @@
 package io.github.intisy.gui.javafx;
 
+import io.github.intisy.gui.javafx.Colors;
+import io.github.intisy.gui.javafx.ResizablePanel;
 import javafx.animation.KeyFrame;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -32,14 +34,13 @@ public class TextArea extends Pane {
     private final TextFlow textFlow;
     private final ScrollPane scrollPane;
     private boolean focused = false;
-
     private boolean selecting = false;
     private int startSelectionIndex = -1;
     private int endSelectionIndex = -1;
-
     private final Rectangle caret;
     private final javafx.animation.Timeline blinkTimeline;
     private int caretIndex = 0;
+    private final Pane selectionPane = new Pane();
 
     public TextArea(double width, double height, double arc, ResizablePanel panel) {
         this(width, height, arc, panel, "");
@@ -102,7 +103,7 @@ public class TextArea extends Pane {
             label.setVisible(false);
         });
         hide();
-        getChildren().addAll(rectangle, scrollPane, caret, label);
+        getChildren().addAll(rectangle, selectionPane, scrollPane, caret, label);
 
         updateCaretPosition();
     }
@@ -126,7 +127,7 @@ public class TextArea extends Pane {
     }
 
     private void updateCaretPosition() {
-        double xOff = 7;
+        double xOff = 6;
         double yOff = -8;
         double xPos = 0;
         double yPos = 0;
@@ -138,10 +139,11 @@ public class TextArea extends Pane {
             xPos += textNode.getBoundsInLocal().getWidth();
             if (textNode.getText().contains("\n"))
                 row++;
-            else
-                do {
+            else {
+                while (row * defaultHeight != textNode.getLayoutY() - 5) {
                     row++;
-                } while (row * defaultHeight != textNode.getLayoutY() - 5);
+                }
+            }
             if (lastRow != row) {
                 lastRow = row;
                 yPos = defaultHeight * (row + 1);
@@ -196,16 +198,19 @@ public class TextArea extends Pane {
             ((Text) node).setFill(textColor);
         }
         int currentIndex = 0;
+        selectionPane.getChildren().clear();
         for (Node node : textFlow.getChildren()) {
             Text textNode = (Text) node;
             int textLength = textNode.getText().length();
-
             if (currentIndex >= minIndex && currentIndex + textLength <= maxIndex) {
-                textNode.setFill(Color.BLUE); // Highlight with a different color
+                Rectangle background = new Rectangle(textNode.getBoundsInLocal().getWidth(), textNode.getBoundsInLocal().getHeight());
+                background.setLayoutX(textNode.getLayoutX());
+                background.setLayoutY(textNode.getLayoutY());
+                background.setFill(Color.rgb(9, 69, 179, 0.8));
+                selectionPane.getChildren().add(background);
             } else {
-                textNode.setFill(textColor); // Default text color
+                textNode.setFill(textColor);
             }
-
             currentIndex += textLength;
         }
     }
@@ -288,6 +293,7 @@ public class TextArea extends Pane {
         Text text = new Text(replacement);
         text.setFill(textColor);
         if (hasSelection()) {
+            selectionPane.getChildren().clear();
             int minIndex = Math.min(startSelectionIndex, endSelectionIndex);
             int maxIndex = Math.max(startSelectionIndex, endSelectionIndex);
             textFlow.getChildren().subList(minIndex, maxIndex).clear();
