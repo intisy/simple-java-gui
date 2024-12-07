@@ -23,7 +23,6 @@ public class Window {
     double blurRadius;
     double height;
     double width;
-    double sizeMultiplier;
     boolean titleEnabled = true;
     JDialog dialog;
     ResizablePanel jfxPanel;
@@ -44,7 +43,6 @@ public class Window {
         this.width = width;
         this.height = height;
         this.blurRadius = blurRadius;
-        sizeMultiplier = blurRadius / 10;
     }
 
     public boolean isTitleEnabled() {
@@ -79,10 +77,10 @@ public class Window {
                 if (isTitleEnabled()) {
                     Rectangle divider = (Rectangle) jfxPanel.getMappedParent().get("window.divider");
                     divider.setWidth(width);
-                    main.setCurrentHeight(height - 40 * sizeMultiplier, true);
+                    main.setCurrentHeight(height - 40, true);
                     Container title = (Container) jfxPanel.getMappedParent().get("window.title");
                     title.setCurrentWidth(width, true);
-                    jfxCloseButton.setLayoutX((width - 30)*sizeMultiplier);
+                    jfxCloseButton.setLayoutX((width - 30));
                 } else {
                     main.setCurrentHeight(height, true);
                 }
@@ -102,7 +100,7 @@ public class Window {
             rectangle.setFill(Color.BLACK);
             GaussianBlur blur = new GaussianBlur();
             blur.setRadius(blurRadius);
-            Container title = new Container(width, 40 * sizeMultiplier)
+            Container title = new Container(width, 40)
                     .setY(blurRadius)
                     .setX(blurRadius)
                     .setColor(Color.rgb(43, 45, 48));
@@ -130,18 +128,18 @@ public class Window {
             jfxPanel.getMappedParent().addAll("window.blur", rectangle, "window.outline", outline);
             if (isTitleEnabled()) {
                 rectangle.setEffect(blur);
-                Rectangle divider = new Rectangle(blurRadius, blurRadius + 40 * sizeMultiplier, width, 1);
+                Rectangle divider = new Rectangle(blurRadius, blurRadius + 40, width, 1);
                 divider.setFill(Color.rgb(60, 63, 65));
                 Group closeShape = new Group(
                         new Line(0, 0, iconSize, iconSize),
                         new Line(0, iconSize, iconSize, 0)
                 );
-                closeShape.setLayoutX((30 * sizeMultiplier - iconSize) / 2);
-                closeShape.setLayoutY((40 * sizeMultiplier - iconSize) / 2);
+                closeShape.setLayoutX((30 - iconSize) / 2);
+                closeShape.setLayoutY((40 - iconSize) / 2);
                 closeShape.getChildren().forEach(line -> ((Line) line).setStroke(Color.WHITE));
-                jfxCloseButton = new SimpleSVGButton(closeShape, 30 * sizeMultiplier, 40 * sizeMultiplier);
+                jfxCloseButton = new SimpleSVGButton(closeShape, 30, 40);
                 jfxCloseButton.setBackgroundColor(Color.rgb(201, 79, 79));
-                jfxCloseButton.setLayoutX((width - 30) * sizeMultiplier);
+                jfxCloseButton.setLayoutX((width - 30));
                 jfxCloseButton.setOnAction(actionEvent -> close());
                 title.getChildren().add(jfxCloseButton);
                 final Point[] clickPoint = new Point[1];
@@ -151,7 +149,7 @@ public class Window {
                     int yOffset = (int) (dialog.getLocation().y - clickPoint[0].y + event.getY());
                     dialog.setLocation(xOffset, yOffset);
                 });
-                Container main = new Container(width, height - 41 * sizeMultiplier).setY(41 * sizeMultiplier + blurRadius).setX(blurRadius);
+                Container main = new Container(width, height - 41).setY(41 + blurRadius).setX(blurRadius);
                 jfxPanel.getMappedParent().addAll("window.divider", divider, "window.title", title, "window.main", main);
             } else {
                 Container main = new Container(width, height).setY(blurRadius).setX(blurRadius);

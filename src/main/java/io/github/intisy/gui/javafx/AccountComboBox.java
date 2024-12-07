@@ -34,7 +34,6 @@ public class AccountComboBox extends HoverPane {
     private Map<String, String> selected;
     private HoverPane plusShape;
     private HoverPane selectedPane;
-    private final double sizeMultiplier;
     private Color strokeColor = Colors.strokeColor;
     private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
     private Color selectedBackground = Colors.selectedBackgroundColorBlue;
@@ -58,28 +57,27 @@ public class AccountComboBox extends HoverPane {
             ImageView imageView = new ImageView(image);
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
-            imageView.setLayoutX(10 * sizeMultiplier);
-            imageView.setLayoutY(10 * sizeMultiplier);
+            imageView.setLayoutX(10);
+            imageView.setLayoutY(10);
             Circle clip = new Circle(imageView.getFitHeight() / 2, imageView.getFitHeight() / 2, imageView.getFitHeight() / 2);
             imageView.setClip(clip);
             Label displayName = new Label(info.get("display_name"));
             displayName.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
-            displayName.setPrefSize(85 * sizeMultiplier, 20 * sizeMultiplier);
-            displayName.setLayoutX(75 * sizeMultiplier);
+            displayName.setPrefSize(85, 20);
+            displayName.setLayoutX(75);
             displayName.setLayoutY(imageView.getFitHeight() / 2);
             displayName.setTextFill(Color.WHITE);
             Label username = new Label("@" + info.get("username"));
             username.setStyle("-fx-font-weight: bold; -fx-font-size: 9px;");
-            username.setPrefSize(85 * sizeMultiplier, 20 * sizeMultiplier);
-            username.setLayoutX(75 * sizeMultiplier);
-            username.setLayoutY(10 * sizeMultiplier + imageView.getFitHeight() / 2);
+            username.setPrefSize(85, 20);
+            username.setLayoutX(75);
+            username.setLayoutY(10 + imageView.getFitHeight() / 2);
             username.setTextFill(Color.rgb(128, 128, 128));
             pane.getChildren().addAll(imageView, displayName, username);
         }
         return pane;
     }
     public AccountComboBox(List<Map<String, String>> data, JFXPanel panel, double width, double height, double arc, boolean auto) {
-        sizeMultiplier = width/265;
         internalComboBox = new ComboBox<>();
         internalComboBox.getItems().setAll(data);
         if (auto) {
@@ -104,12 +102,12 @@ public class AccountComboBox extends HoverPane {
 
         arrow = new Polygon();
         arrow.getPoints().addAll(
-                width-20.0*sizeMultiplier, height/2-2.5*sizeMultiplier,
-                width-25.0*sizeMultiplier, height/2+2.5*sizeMultiplier,
-                width-30.0*sizeMultiplier, height/2-2.5*sizeMultiplier,
-                width-31.0*sizeMultiplier, height/2-1.5*sizeMultiplier,
-                width-25.0*sizeMultiplier, height/2+4.5*sizeMultiplier,
-                width-19.0*sizeMultiplier, height/2-1.5*sizeMultiplier
+                width-20.0, height/2-2.5,
+                width-25.0, height/2+2.5,
+                width-30.0, height/2-2.5,
+                width-31.0, height/2-1.5,
+                width-25.0, height/2+4.5,
+                width-19.0, height/2-1.5
         );
         arrow.setFill(Color.rgb(147,163,170));
 
