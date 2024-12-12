@@ -141,6 +141,10 @@ public class TextArea extends Pane {
         }
     }
 
+    public void centerVertically() {
+        textFlow.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> textFlow.setLayoutY((height - newBounds.getHeight()) / 2));
+    }
+
     private void updateCaretPosition() {
         double xOff = 6;
         double yOff = -8;
@@ -234,7 +238,7 @@ public class TextArea extends Pane {
         if (!event.isControlDown() && focused) {
             String character = event.getCharacter();
             if (character.equals("\r")) {
-                int rows = 0;
+                int rows = 1;
                 for (Node node : textFlow.getChildren()) {
                     if (node instanceof Text)
                         if (((Text) node).getText().equals("\n"))
