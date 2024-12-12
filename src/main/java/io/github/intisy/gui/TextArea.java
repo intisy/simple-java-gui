@@ -155,7 +155,7 @@ public class TextArea extends Pane {
         double yOff = -8;
         double xPos = 0;
         double yPos = 0;
-        double defaultHeight = 0;
+        double defaultHeight = 15.9609375;
         int lastRow = 0;
         int row = 0;
         for (int i = 0; i < caretIndex; i++) {
@@ -182,6 +182,7 @@ public class TextArea extends Pane {
             yPos += yOff;
         else
             yPos = defaultHeight + yOff;
+        System.out.println(defaultHeight);
         caret.setTranslateX(xOff + xPos);
         caret.setTranslateY(yPos);
     }
