@@ -155,12 +155,12 @@ public class TextArea extends Pane {
         double yOff = -8;
         double xPos = 0;
         double yPos = 0;
-        double defaultHeight = 15.9609375;
+        double defaultHeight = 0;
         int lastRow = 0;
         int row = 0;
         for (int i = 0; i < caretIndex; i++) {
             Text textNode = (Text) textFlow.getChildren().get(i);
-            System.out.println(textNode.getBoundsInLocal());
+            defaultHeight = textNode.getBoundsInLocal().getHeight();
             xPos += textNode.getBoundsInLocal().getWidth();
             if (textNode.getText().contains("\n"))
                 row++;
