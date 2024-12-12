@@ -34,6 +34,7 @@ public class TextArea extends Pane {
     private final ScrollPane scrollPane;
     private boolean focused = false;
     private boolean selecting = false;
+    private boolean centeredVertically;
     private int maxRows = -1;
     private int startSelectionIndex = -1;
     private int endSelectionIndex = -1;
@@ -144,11 +145,8 @@ public class TextArea extends Pane {
         }
     }
 
-    public void centerVertically() {
-        textFlow.textAlignmentProperty().addListener((obs, oldBounds, newBounds) -> {
-            System.out.println(newBounds);
-//            textFlow.setLayoutY((height - newBounds.getHeight()) / 2);
-        });
+    public void setCenteredVertically(boolean centeredVertically) {
+        this.centeredVertically = centeredVertically;
     }
 
     private void updateCaretPosition() {
