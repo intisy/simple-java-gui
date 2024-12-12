@@ -1,6 +1,7 @@
 package io.github.intisy.gui;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -71,10 +72,10 @@ public class TextArea extends Pane {
         scrollPane.setFocusTraversable(false);
         caret = new Rectangle(1, 12, Color.WHITE);
         caret.setVisible(false);
-        blinkTimeline = new javafx.animation.Timeline(
+        blinkTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.5), evt -> caret.setVisible(!caret.isVisible() && focused))
         );
-        blinkTimeline.setCycleCount(javafx.animation.Timeline.INDEFINITE);
+        blinkTimeline.setCycleCount(Timeline.INDEFINITE);
         scrollPane.setOnMousePressed(this::startSelection);
         textFlow.setOnMouseDragged(this::updateSelection);
         scrollPane.setOnMouseReleased(this::endSelection);
@@ -159,6 +160,7 @@ public class TextArea extends Pane {
         int row = 0;
         for (int i = 0; i < caretIndex; i++) {
             Text textNode = (Text) textFlow.getChildren().get(i);
+            System.out.println(textNode.getBoundsInLocal());
             xPos += textNode.getBoundsInLocal().getWidth();
             if (textNode.getText().contains("\n"))
                 row++;
