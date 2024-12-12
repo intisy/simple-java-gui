@@ -68,7 +68,7 @@ public class TextArea extends Pane {
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         scrollPane.setFocusTraversable(false);
-        caret = new Rectangle(1, 13, Color.WHITE);
+        caret = new Rectangle(1, 12, Color.WHITE);
         caret.setVisible(false);
         blinkTimeline = new javafx.animation.Timeline(
                 new KeyFrame(Duration.seconds(0.5), evt -> caret.setVisible(!caret.isVisible() && focused))
@@ -115,6 +115,7 @@ public class TextArea extends Pane {
                 ((Text) text).setFont(font);
         }
         this.font = font;
+        caret.setHeight(font.getSize());
     }
 
     public void setMaxRows(int maxRows) {
@@ -129,7 +130,7 @@ public class TextArea extends Pane {
         selecting = true;
         startSelectionIndex = getCharacterIndexAt(event.getX(), event.getY());
         endSelectionIndex = startSelectionIndex;
-        caretIndex = startSelectionIndex; // Update caret position
+        caretIndex = startSelectionIndex;
         updateCaretPosition();
         updateTextSelection();
     }
@@ -144,10 +145,9 @@ public class TextArea extends Pane {
     }
 
     public void centerVertically() {
-        textFlow.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
-            System.out.println(height);
-            System.out.println(newBounds.getHeight());
-            textFlow.setLayoutY((height - newBounds.getHeight()) / 2);
+        textFlow.textAlignmentProperty().addListener((obs, oldBounds, newBounds) -> {
+            System.out.println(newBounds);
+//            textFlow.setLayoutY((height - newBounds.getHeight()) / 2);
         });
     }
 
@@ -244,19 +244,23 @@ public class TextArea extends Pane {
         if (!event.isControlDown() && focused) {
             String character = event.getCharacter();
             if (character.equals("\r")) {
-                int rows = 1;
-                for (Node node : textFlow.getChildren()) {
-                    if (node instanceof Text)
-                        if (((Text) node).getText().equals("\n"))
-                            rows++;
-                }
-                if (rows != maxRows)
+                if (getRows() != maxRows)
                     replaceSelectedText("\n");
             } else if (!character.equals("\b")) {
                 replaceSelectedText(character);
             }
             updateCaretPosition();
         }
+    }
+
+    public int getRows() {
+        int rows = 1;
+        for (Node node : textFlow.getChildren()) {
+            if (node instanceof Text)
+                if (((Text) node).getText().equals("\n"))
+                    rows++;
+        }
+        return rows;
     }
 
     private void handleKeyPressed(KeyEvent event) {
