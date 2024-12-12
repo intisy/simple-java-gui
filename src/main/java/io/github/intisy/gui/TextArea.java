@@ -38,6 +38,7 @@ public class TextArea extends Pane {
     private int startSelectionIndex = -1;
     private int endSelectionIndex = -1;
     private final Rectangle caret;
+    private Font font;
     private final javafx.animation.Timeline blinkTimeline;
     private int caretIndex = 0;
     private final Pane selectionPane = new Pane();
@@ -113,6 +114,7 @@ public class TextArea extends Pane {
             if (text instanceof Text)
                 ((Text) text).setFont(font);
         }
+        this.font = font;
     }
 
     public void setMaxRows(int maxRows) {
@@ -120,7 +122,7 @@ public class TextArea extends Pane {
     }
 
     public Font getFont() {
-        return ((Text) (textFlow.getChildren().get(0))).getFont();
+        return font != null ? font : ((Text) (textFlow.getChildren().get(0))).getFont();
     }
 
     private void startSelection(MouseEvent event) {
@@ -142,7 +144,11 @@ public class TextArea extends Pane {
     }
 
     public void centerVertically() {
-        textFlow.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> textFlow.setLayoutY((height - newBounds.getHeight()) / 2));
+        textFlow.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
+            System.out.println(height);
+            System.out.println(newBounds.getHeight());
+            textFlow.setLayoutY((height - newBounds.getHeight()) / 2);
+        });
     }
 
     private void updateCaretPosition() {
@@ -318,6 +324,8 @@ public class TextArea extends Pane {
     private void replaceSelectedText(String replacement) {
         Text text = new Text(replacement);
         text.setFill(textColor);
+        if (font != null)
+            text.setFont(font);
         if (hasSelection()) {
             selectionPane.getChildren().clear();
             int minIndex = Math.min(startSelectionIndex, endSelectionIndex);
@@ -346,6 +354,8 @@ public class TextArea extends Pane {
             String s = text.substring(i, i + 1);
             Text node = new Text(s);
             node.setFill(textColor);
+            if (font != null)
+                node.setFont(font);
             textFlow.getChildren().add(caretIndex, node);
             caretIndex++;
         }
