@@ -41,8 +41,9 @@ public class TextArea extends Pane {
     private int endSelectionIndex = -1;
     private final Rectangle caret;
     private Font font;
-    private final javafx.animation.Timeline blinkTimeline;
+    private final Timeline blinkTimeline;
     private int caretIndex = 0;
+    private final double fontToPixelSize = 1.14990234375;
     private final Pane selectionPane = new Pane();
 
     public TextArea(double width, double height, double arc, ResizablePanel panel) {
@@ -112,12 +113,13 @@ public class TextArea extends Pane {
     }
 
     public void setFont(Font font) {
-        for (Node text : textFlow.getChildren()) {
+        for (Node text : this.textFlow.getChildren()) {
             if (text instanceof Text)
                 ((Text) text).setFont(font);
         }
         this.font = font;
-        caret.setHeight(font.getSize());
+        this.label.setFont(font);
+        this.caret.setHeight(font.getSize());
     }
 
     public void setMaxRows(int maxRows) {
@@ -125,7 +127,12 @@ public class TextArea extends Pane {
     }
 
     public Font getFont() {
-        return font != null ? font : ((Text) (textFlow.getChildren().get(0))).getFont();
+        if (font != null)
+            return font;
+        else if (!textFlow.getChildren().isEmpty())
+            return ((Text) (textFlow.getChildren().get(0))).getFont();
+        else
+            return new Font("System Regular", 12);
     }
 
     private void startSelection(MouseEvent event) {
@@ -140,7 +147,7 @@ public class TextArea extends Pane {
     private void updateSelection(MouseEvent event) {
         if (selecting) {
             endSelectionIndex = getCharacterIndexAt(event.getX(), event.getY());
-            caretIndex = endSelectionIndex; // Update caret position during drag
+            caretIndex = endSelectionIndex;
             updateCaretPosition();
             updateTextSelection();
         }
@@ -148,19 +155,28 @@ public class TextArea extends Pane {
 
     public void setCenteredVertically(boolean centeredVertically) {
         this.centeredVertically = centeredVertically;
+        updateCaretPosition();
     }
 
     private void updateCaretPosition() {
         double xOff = 6;
-        double yOff = -8;
+        double yOff = 8;
         double xPos = 0;
         double yPos = 0;
-        double defaultHeight = 15.9609375;
         int lastRow = 0;
         int row = 0;
+        double fontHeight = fontToPixelSize * getFont().getSize();
+        double defaultHeight = Integer.MAX_VALUE;
         for (int i = 0; i < caretIndex; i++) {
             Text textNode = (Text) textFlow.getChildren().get(i);
-            defaultHeight = textNode.getBoundsInLocal().getHeight();
+            double height = textNode.getBoundsInLocal().getHeight();
+            if (height != 0)
+                defaultHeight = Math.min(height, defaultHeight);
+        }
+        if (defaultHeight == Integer.MAX_VALUE)
+            defaultHeight = fontHeight;
+        for (int i = 0; i < caretIndex; i++) {
+            Text textNode = (Text) textFlow.getChildren().get(i);
             xPos += textNode.getBoundsInLocal().getWidth();
             if (textNode.getText().contains("\n"))
                 row++;
@@ -171,20 +187,22 @@ public class TextArea extends Pane {
             }
             if (lastRow != row) {
                 lastRow = row;
-                yPos = defaultHeight * (row + 1);
+                yPos += defaultHeight;
                 if (textNode.getText().contains("\n"))
                     xPos = 0;
                 else
                     xPos = textNode.getBoundsInLocal().getWidth();
             }
         }
-        if (yPos != 0)
-            yPos += yOff;
+        double centered;
+        if (centeredVertically)
+            centered = (height - defaultHeight * getRows()) / 2 - 5;
         else
-            yPos = defaultHeight + yOff;
-        System.out.println(defaultHeight);
+            centered = 0;
+        label.setLayoutY(centered);
+        scrollPane.setLayoutY(centered);
         caret.setTranslateX(xOff + xPos);
-        caret.setTranslateY(yPos);
+        caret.setTranslateY(yOff + yPos + centered);
     }
 
     private void endSelection(MouseEvent event) {
@@ -198,7 +216,7 @@ public class TextArea extends Pane {
     private int getCharacterIndexAt(double x, double y) {
         int size = 0;
         int index = 0;
-        Map<java.lang.Double, java.lang.Double> widths = new HashMap<>();
+        Map<Double, Double> widths = new HashMap<>();
         for (Node node : textFlow.getChildren()) {
             Text textNode = (Text) node;
             double nodeWidth = textNode.getBoundsInLocal().getWidth();
@@ -230,8 +248,13 @@ public class TextArea extends Pane {
             int textLength = textNode.getText().length();
             if (currentIndex >= minIndex && currentIndex + textLength <= maxIndex) {
                 Rectangle background = new Rectangle(textNode.getBoundsInLocal().getWidth(), textNode.getBoundsInLocal().getHeight());
+                double centered;
+                if (centeredVertically)
+                    centered = (height - fontToPixelSize * getFont().getSize() * getRows()) / 2 - 5;
+                else
+                    centered = 0;
                 background.setLayoutX(textNode.getLayoutX());
-                background.setLayoutY(textNode.getLayoutY());
+                background.setLayoutY(textNode.getLayoutY() + centered);
                 background.setFill(Color.rgb(9, 69, 179, 0.8));
                 selectionPane.getChildren().add(background);
             } else {
@@ -272,7 +295,8 @@ public class TextArea extends Pane {
                         replaceSelectedText("");
                     } else {
                         boolean first = true;
-                        while ((!textFlow.getChildren().isEmpty() && caretIndex > 0 && !((Text) textFlow.getChildren().get(caretIndex - 1)).getText().equals(" ")) || first) {
+                        String text;
+                        while (((!textFlow.getChildren().isEmpty() && caretIndex > 0 && !(text = ((Text) textFlow.getChildren().get(caretIndex - 1)).getText()).equals(" ") && !text.equals("\n")) || first) && !textFlow.getChildren().isEmpty()) {
                             textFlow.getChildren().remove(caretIndex - 1);
                             caretIndex--;
                             first = false;
@@ -478,6 +502,6 @@ public class TextArea extends Pane {
 
     @Override
     public void setHeight(double height) {
-        this.height = height;
+//        this.height = height;
     }
 }

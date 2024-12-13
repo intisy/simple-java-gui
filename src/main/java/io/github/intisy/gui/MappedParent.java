@@ -67,9 +67,21 @@ public class MappedParent extends LayeredParent {
         else
             return null;
     }
+
+    public void clear() {
+        for (Node node : getAll()) {
+            remove(node);
+        }
+    }
+
+    public Node[] getAll() {
+        return getChildrenMap().values().toArray(new Node[0]);
+    }
+
     public void remove(String node) {
         children.remove(node);
     }
+
     @Deprecated
     public ObservableList<Node> getChildren() {
         return super.getChildren();
