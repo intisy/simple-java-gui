@@ -5,12 +5,7 @@ on:
 permissions:
   contents: write
 jobs:
-  call-sync-development-to-main:
-    uses: ./.github/workflows/sync-development-to-main.yml
-    secrets: inherit
-
   call-reusable-workflow:
-    needs: call-sync-development-to-main
     uses: intisy/workflows/.github/workflows/readme-dependency.yml@main
     with:
       repository: ${{ github.repository }}
