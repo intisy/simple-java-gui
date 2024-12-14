@@ -28,7 +28,7 @@ jobs:
 
       - name: Merge Development into Main
         run: |
-          git merge --no-ff origin/development -m "Automated merge from development to main"
+          git merge --no-ff development -m "Automated merge from development to main"
 
       - name: Push Changes
         run: git push origin main
