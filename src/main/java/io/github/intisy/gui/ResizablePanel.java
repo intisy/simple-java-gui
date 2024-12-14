@@ -8,6 +8,8 @@ import javafx.scene.shape.Rectangle;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -19,6 +21,7 @@ public class ResizablePanel extends MappedJFXPanel {
     public List<Object> resizeEvents = new ArrayList<>();
     private JDialog dialog;
     private JFrame frame;
+    private String[] cursors = new String[] {"cursor.nw_resize", "cursor.n_resize", "cursor.ne_resize", "cursor.e_resize", "cursor.se_resize", "cursor.s_resize", "cursor.sw_resize", "cursor.w_resize"};
 
     public void setDialog(JDialog dialog) {
         this.dialog = dialog;
@@ -63,18 +66,20 @@ public class ResizablePanel extends MappedJFXPanel {
             moveResizeHitboxes();
         });
     }
+
+    public void clear() {
+        for (String node : getMappedParent().getKeys()) {
+            if (!Arrays.asList(cursors).contains(node)) {
+                getMappedParent().remove(node);
+            }
+        }
+    }
     public void setHitboxRadius(double radius) {
         hitboxRadius = radius;
     }
     public void toFront() {
-        getMappedParent().toFront("cursor.nw_resize");
-        getMappedParent().toFront("cursor.n_resize");
-        getMappedParent().toFront("cursor.ne_resize");
-        getMappedParent().toFront("cursor.e_resize");
-        getMappedParent().toFront("cursor.se_resize");
-        getMappedParent().toFront("cursor.s_resize");
-        getMappedParent().toFront("cursor.sw_resize");
-        getMappedParent().toFront("cursor.w_resize");
+        for (String cursor : cursors)
+            getMappedParent().toFront(cursor);
     }
     public void setSize(double width, double height) {
         setSize(width, height, true);
