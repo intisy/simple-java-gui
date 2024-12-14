@@ -37,19 +37,24 @@ public class AccountComboBox extends HoverPane {
     private Color strokeColor = Colors.strokeColor;
     private Color selectedStrokeColor = Colors.selectedStrokeColorBlue;
     private Color selectedBackground = Colors.selectedBackgroundColorBlue;
+
     public void setBackgroundColor(Color color) {
         rectangle.setFill(color);
     }
+
     public void setSelectedBackgroundColor(Color color) {
         selectedBackground = color;
     }
+
     public void setStrokeColor(Color color) {
         strokeColor = color;
         rectangle.setStroke(color);
     }
+
     public void setSelectedStrokeColor(Color color) {
         selectedStrokeColor = color;
     }
+
     private HoverPane generateAccountPane(Map<String, String> info) {
         HoverPane pane = new HoverPane();
         if (info != null) {
@@ -77,6 +82,7 @@ public class AccountComboBox extends HoverPane {
         }
         return pane;
     }
+
     public AccountComboBox(List<Map<String, String>> data, JFXPanel panel, double width, double height, double arc, boolean auto) {
         internalComboBox = new ComboBox<>();
         internalComboBox.getItems().setAll(data);
@@ -191,9 +197,11 @@ public class AccountComboBox extends HoverPane {
                     }
                 });
     }
+
     public double getNewHeight() {
         return height;
     }
+
     private final ObjectProperty<EventHandler<ActionEvent>> onAction = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
@@ -210,6 +218,7 @@ public class AccountComboBox extends HoverPane {
             return "onAction";
         }
     };
+
     private final ObjectProperty<EventHandler<ActionEvent>> onSelect = new ObjectPropertyBase<EventHandler<ActionEvent>>() {
         @Override
         protected void invalidated() {
@@ -226,15 +235,19 @@ public class AccountComboBox extends HoverPane {
             return "onSelect";
         }
     };
+
     public final void setOnAction(EventHandler<ActionEvent> var1) {
         this.onAction.set(var1);
     }
+
     public final void setOnSelect(EventHandler<ActionEvent> var1) {
         this.onSelect.set(var1);
     }
+
     public double getNewWidth() {
         return width;
     }
+
     public void mouseEvent(javafx.scene.input.MouseEvent event) {
         int id = selected == null ? 1 : 0;
         if (selection != null)
@@ -283,6 +296,7 @@ public class AccountComboBox extends HoverPane {
             }
         }
     }
+
     public void hide() {
         if (selection != null)
             getChildren().remove(selection);
@@ -297,12 +311,15 @@ public class AccountComboBox extends HoverPane {
             getChildren().add(arrow);
         items.clear();
     }
+
     public ObservableList<Map<String, String>> getItems() {
         return internalComboBox.getItems();
     }
+
     public Map<String, String> getValue() {
         return internalComboBox.getSelectionModel().getSelectedItem();
     }
+    
     public  SingleSelectionModel<Map<String, String>> getSelectionModel() {
         return internalComboBox.getSelectionModel();
     }
