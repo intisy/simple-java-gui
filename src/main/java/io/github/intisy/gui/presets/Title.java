@@ -9,6 +9,7 @@ import javafx.scene.shape.Line;
 import javax.swing.*;
 import java.awt.*;
 
+@SuppressWarnings("unused")
 public class Title extends Container {
     int iconSize = 10;
     public Title(Frame frame, double width, double height) {
