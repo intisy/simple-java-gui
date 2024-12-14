@@ -69,13 +69,17 @@ public class MappedParent extends LayeredParent {
     }
 
     public void clear() {
-        for (Node node : getAll()) {
+        for (String node : getKeys()) {
             remove(node);
         }
     }
 
-    public Node[] getAll() {
+    public Node[] getValues() {
         return getChildrenMap().values().toArray(new Node[0]);
+    }
+
+    public String[] getKeys() {
+        return getChildrenMap().keySet().toArray(new String[0]);
     }
 
     public void remove(String node) {
