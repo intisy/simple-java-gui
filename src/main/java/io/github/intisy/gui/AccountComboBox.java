@@ -319,7 +319,7 @@ public class AccountComboBox extends HoverPane {
     public Map<String, String> getValue() {
         return internalComboBox.getSelectionModel().getSelectedItem();
     }
-    
+
     public  SingleSelectionModel<Map<String, String>> getSelectionModel() {
         return internalComboBox.getSelectionModel();
     }
