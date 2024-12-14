@@ -5,6 +5,7 @@ import io.github.intisy.gui.SimpleButton;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Node;
 
+@SuppressWarnings("unused")
 public class GrayButton extends SimpleButton {
     public GrayButton(String text, JFXPanel panel, double width, double height, double arc) {
         this(null, text, panel, width, height, arc);
