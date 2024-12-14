@@ -134,8 +134,8 @@ public class Window {
                         new Line(0, 0, iconSize, iconSize),
                         new Line(0, iconSize, iconSize, 0)
                 );
-                closeShape.setLayoutX((30 - iconSize) / 2);
-                closeShape.setLayoutY((40 - iconSize) / 2);
+                closeShape.setLayoutX((double) (30 - iconSize) / 2);
+                closeShape.setLayoutY((double) (40 - iconSize) / 2);
                 closeShape.getChildren().forEach(line -> ((Line) line).setStroke(Color.WHITE));
                 jfxCloseButton = new SimpleSVGButton(closeShape, 30, 40);
                 jfxCloseButton.setBackgroundColor(Color.rgb(201, 79, 79));
