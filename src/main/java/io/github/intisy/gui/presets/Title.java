@@ -24,15 +24,15 @@ public class Title extends Container {
                 new Line(0, 0, iconSize, iconSize),
                 new Line(0, iconSize, iconSize, 0)
         );
-        closeShape.setLayoutX((50 - iconSize) / 2);
-        closeShape.setLayoutY((40 - iconSize) / 2);
+        closeShape.setLayoutX((double) (50 - iconSize) / 2);
+        closeShape.setLayoutY((double) (40 - iconSize) / 2);
         closeShape.getChildren().forEach(line -> ((Line) line).setStroke(Color.WHITE));
         SimpleSVGButton jfxCloseButton = new SimpleSVGButton(closeShape, 50, 40);
         jfxCloseButton.setBackgroundColor(Color.rgb(201,79,79));
         jfxCloseButton.setOnAction(actionEvent -> frame.dispose());
         Line minimizeShape = new Line(0, 0, iconSize, 0);
-        minimizeShape.setLayoutX((50 - iconSize) / 2);
-        minimizeShape.setLayoutY(40 / 2);
+        minimizeShape.setLayoutX((double) (50 - iconSize) / 2);
+        minimizeShape.setLayoutY((double) 40 / 2);
         minimizeShape.setStroke(Color.WHITE);
         minimizeShape.setStrokeWidth(1.5);
         SimpleSVGButton jfxMinimizeButton = new SimpleSVGButton(minimizeShape, 50, 40);
