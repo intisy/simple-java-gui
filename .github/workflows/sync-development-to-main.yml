@@ -1,7 +1,9 @@
 name: Sync Development to Main
 
 on:
-  workflow_call:
+  push:
+    branches:
+      - development
 
 permissions:
   contents: write
