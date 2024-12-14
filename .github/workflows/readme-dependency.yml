@@ -10,7 +10,6 @@ jobs:
     secrets: inherit
 
   call-reusable-workflow:
-    needs: call-sync-development-to-main
     uses: intisy/workflows/.github/workflows/readme-dependency.yml@main
     with:
       repository: ${{ github.repository }}
