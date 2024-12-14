@@ -4,6 +4,7 @@ import javafx.collections.MapChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 
+@SuppressWarnings("unused")
 public class MappedPane extends Pane {
     private final ObservableMap<String, Node> children = new ObservableMapWrapper<>();
     public MappedPane() {
