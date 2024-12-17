@@ -448,6 +448,12 @@ public class Container extends MappedPane {
         drawContainer();
     }
 
+    public Pane getBackgroundPane() {
+        Pane pane = new Pane();
+        pane.getChildren().addAll(bg1, bg2);
+        return pane;
+    }
+
     @FunctionalInterface
     public interface ChangeInterface {
         void execute(double width, double height);
