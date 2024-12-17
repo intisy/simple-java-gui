@@ -13,7 +13,7 @@ public class MappedPane extends Pane {
                 getChildren().add(change.getValueAdded());
             }
             if (change.wasRemoved()) {
-                getChildren().remove(change.getValueAdded());
+                getChildren().remove(change.getValueRemoved());
             }
         });
     }
