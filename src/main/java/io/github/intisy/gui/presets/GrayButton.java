@@ -17,5 +17,8 @@ public class GrayButton extends SimpleButton {
         super(graphic, text, panel, width, height, arc);
         setStrokeWidth(0.7);
         setBackgroundColor(Colors.backgroundColor);
+        setSelectedStrokeColor(Colors.selectedStrokeColorBlue);
+        setStrokeColor(Colors.strokeColor);
+        setTextFill(Colors.textColor);
     }
 }

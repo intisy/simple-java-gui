@@ -20,5 +20,6 @@ public class BlueButton extends SimpleButton {
         setBackgroundColor(Colors.selectedStrokeColorBlue);
         setSelectedStrokeColor(Colors.selectedStrokeColorBlue);
         setStrokeColor(Colors.selectedStrokeColorBlue);
+        setTextFill(Colors.textColor);
     }
 }
