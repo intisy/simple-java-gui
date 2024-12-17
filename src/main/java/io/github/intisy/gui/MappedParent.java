@@ -17,9 +17,8 @@ public class MappedParent extends LayeredParent {
                 add(change.getValueAdded().getValue(), change.getValueAdded().getKey());
             }
             if (change.wasRemoved()) {
-                remove(change.getValueRemoved().getValue());
+                remove(change.getValueRemoved().getKey());
             }
-            System.out.println(change);
         });
     }
     public void toFront(String key) {
