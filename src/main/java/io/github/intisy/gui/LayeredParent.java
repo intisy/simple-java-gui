@@ -35,10 +35,17 @@ public class LayeredParent extends Parent {
         }
     }
     public void remove(int layer) {
+        getChildren().remove(children.get(layer));
         children.remove(layer);
     }
 
     public void remove(Node node) {
-        children.entrySet().removeIf(entry -> entry.getValue().equals(node));
+        children.entrySet().removeIf(entry -> {
+            if (entry.getValue().equals(node)) {
+                getChildren().remove(node);
+                return true;
+            } else
+                return false;
+        });
     }
 }
