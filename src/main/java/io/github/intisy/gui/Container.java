@@ -406,7 +406,7 @@ public class Container extends MappedPane {
     public double getOutlineWidth() {
         return outlineWidth;
     }
-
+    private final Pane pane = new Pane();
     private void drawContainer() {
         callOnResize(width, height);
         int offsetX = 0;
@@ -435,11 +435,13 @@ public class Container extends MappedPane {
         bg2.setLayoutX(offsetX);
         bg2.setLayoutY(offsetY);
         bg2.setFill(color);
+        if (!pane.getChildren().isEmpty())
+            pane.getChildren().clear();
+        pane.getChildren().addAll(bg1, bg2);
         if (getChildren().isEmpty())
-            getChildren().addAll(bg1, bg2);
+            getChildren().add(pane);
         else {
-            getChildren().set(0, bg1);
-            getChildren().set(1, bg2);
+            getChildren().set(0, pane);
         }
     }
     public void clear() {
@@ -449,8 +451,6 @@ public class Container extends MappedPane {
     }
 
     public Pane getBackgroundPane() {
-        Pane pane = new Pane();
-        pane.getChildren().addAll(bg1, bg2);
         return pane;
     }
 
