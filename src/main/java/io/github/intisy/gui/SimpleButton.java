@@ -21,7 +21,6 @@ public class SimpleButton extends ButtonBase {
     double width;
     private Color strokeColor;
     private Color selectedStrokeColor;
-    private Color textFillColor;
     private boolean selected;
     private double strokeWidth;
     private double selectedStrokeWidth;
@@ -49,21 +48,15 @@ public class SimpleButton extends ButtonBase {
         super(width, height);
         this.height = height;
         this.width = width;
-        this.strokeColor = Colors.strokeColor;
-        this.selectedStrokeColor = Colors.selectedStrokeColorBlue;
-        this.textFillColor = Colors.textColor;
         this.strokeWidth = 1;
         this.selectedStrokeWidth = 3;
-        this.rectangle.setFill(Colors.lightBackgroundColor);
         this.rectangle.setArcWidth(arc);
         this.rectangle.setArcHeight(arc);
-        this.rectangle.setStroke(strokeColor);
         this.rectangle.setStrokeWidth(strokeWidth);
 
         getChildren().add(this.rectangle);
         if (text != null) {
             this.label = new Label(text);
-            this.label.setTextFill(textFillColor);
             Font font = new Font(this.label.getFont().getFamily(), this.label.getFont().getSize()*(Math.min(height, width)/22));
             this.label.setFont(font);
             Text fontText = new Text(text);
@@ -111,7 +104,6 @@ public class SimpleButton extends ButtonBase {
     }
     public void setTextFill(Color color) {
         this.label.setTextFill(color);
-        this.textFillColor = color;
     }
     public void setBackgroundColor(Color color) {
         this.rectangle.setFill(color);
