@@ -3,6 +3,7 @@ package io.github.intisy.gui.presets;
 import io.github.intisy.gui.Container;
 import io.github.intisy.gui.SimpleSVGButton;
 import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
@@ -15,8 +16,9 @@ public class Title extends Container {
     public Title(Frame frame, double width, double height) {
         super(width, height);
         final Point[] clickPoint = new Point[1];
-        setOnMousePressed(event -> clickPoint[0] = new Point((int) event.getX(), (int) event.getY()));
-        setOnMouseDragged((event) -> {
+        Pane background = getBackgroundPane();
+        background.setOnMousePressed(event -> clickPoint[0] = new Point((int) event.getX(), (int) event.getY()));
+        background.setOnMouseDragged((event) -> {
             int xOffset = (int) (frame.getLocation().x - clickPoint[0].x + event.getX());
             int yOffset = (int) (frame.getLocation().y - clickPoint[0].y + event.getY());
             frame.setLocation(xOffset, yOffset);
