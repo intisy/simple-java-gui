@@ -2,14 +2,13 @@ package io.github.intisy.gui;
 
 import javafx.application.Platform;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -73,6 +72,18 @@ public class ResizablePanel extends MappedJFXPanel {
                 getMappedParent().remove(node);
             }
         }
+    }
+
+    public Map<String, Node> getChildrenMap() {
+        Map<String, Node> map = new HashMap<>();
+
+        for (Map.Entry<String, Node> entry : getMappedParent().getChildrenMap().entrySet()) {
+            if (!Arrays.asList(cursors).contains(entry.getKey())) {
+                map.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return map;
     }
     public void setHitboxRadius(double radius) {
         hitboxRadius = radius;
